@@ -9,6 +9,10 @@ export const Main = styled.div`
     column-gap: 20px;
     row-gap: 50px;
     padding: 0 16px;
+
+    ${Media.tab`
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    `}
 `
 
 export const Item = styled.article`
@@ -24,6 +28,7 @@ export const ItemName = styled.span`
         size: TextSize.body.nm,
         weight: TextWeight.reguler,
     })}
+    text-transform: capitalize;
 `
 
 export const StackImg = styled.figure`
@@ -31,11 +36,13 @@ export const StackImg = styled.figure`
     height: 200px;
     position: relative;
 
+    ${Media.tab`
+        height: 250px;
+    `}
+
     img.level3,
     img.level2,
     img.level1 {
-        /* width: 90%;
-        height: 90%; */
         position: absolute;
         border-radius: 4px;
     }
@@ -46,6 +53,10 @@ export const StackImg = styled.figure`
         z-index: 3;
         bottom: 0;
         left: 0;
+
+        ${Media.tab`
+            width: 85%;
+        `}
     }
 
     img.level2 {
@@ -54,6 +65,10 @@ export const StackImg = styled.figure`
         z-index: 2;
         bottom: 8px;
         left: 8px;
+
+        ${Media.tab`
+            width: 86%;
+        `}
     }
 
     img.level1 {

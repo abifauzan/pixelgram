@@ -6,7 +6,7 @@ function AlbumCard(props) {
     return (
         <Main>
             {Array(5).fill().map((_, index) => (
-                <Item>
+                <Item key={index}>
                     <StackImg>
                         <img 
                             src='https://via.placeholder.com/600/363789' 

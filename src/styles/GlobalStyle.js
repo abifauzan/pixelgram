@@ -41,10 +41,15 @@ export const GlobalStyles = createGlobalStyle`
         transition: all 0.2s ease-in;
     }
 
-    button, input {
+    button {
+        cursor: pointer;
+    }
+
+    button, input, textarea {
         appearance: none;
         border: none;
         outline: none !important;
+        resize: none;
     }
 
 

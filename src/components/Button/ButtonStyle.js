@@ -54,4 +54,8 @@ export const ButtonStyled = styled.div`
         border-left: ${outlineWidth} black solid;
         border-right: ${outlineWidth} black solid;
     }
+
+    svg {
+        color: ${Color.dark};
+    }
 `

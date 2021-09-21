@@ -10,6 +10,7 @@ export const LogoStyled = styled(Link)`
     justify-content: center;
     align-self: center;
     padding: 20px 0;
+    gap: 10px;
 
     img {
         width: 80px;
