@@ -12,6 +12,7 @@ export const Flex = styled.main`
     width: 100%;
     display: flex;
     flex-direction: ${({ direction }) => direction === 'column' ? 'column' : 'row'};
+    justify-content: ${({ spaceBetween }) => spaceBetween ? 'space-between' : 'flex-start'};
     align-items: center;
     position: relative;
     overflow: hidden;

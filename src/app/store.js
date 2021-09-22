@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
 import profileReducer from '../redux/profileSlice'
+import dataFilteredReducer from '../redux/dataFilteredSlice'
 import { albumApi } from '../services/albumApi';
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    // counter: counterReducer,
     profile: profileReducer,
+    dataFiltered: dataFilteredReducer,
     [albumApi.reducerPath]: albumApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

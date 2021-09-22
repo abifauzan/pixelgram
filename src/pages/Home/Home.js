@@ -9,6 +9,7 @@ import {
     SplashContainer,
     AvatarGrid,
     AvatarItem,
+    SearchQueryBox,
 } from './Component'
 import AlbumCard from '../../components/AlbumCard/AlbumCard';
 import {
@@ -22,6 +23,7 @@ import Loading from '../../components/Loading/Loading';
 import { useHistory } from 'react-router';
 import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import PopupFilter from '../../components/PopupFilter/PopupFilter';
+import { selectData } from '../../redux/dataFilteredSlice';
 
 const Hero = ({ profileData }) => {
 
@@ -86,9 +88,23 @@ const SplashPage = ({ dataUsers }) => {
 const LoggedInComp = ({ profileData }) => {
     const [hasPopup, setHasPopup] = useState(false)
 
+    const filteredDataSelector = useSelector(selectData)
+    console.log(filteredDataSelector)
+
     return (
         <Flex direction='column'>
             <Hero profileData={profileData} />
+
+            {checkObjectLength(filteredDataSelector) && (
+                <SearchQueryBox>
+                    <span className='title'>Search by: {' '}
+                        <strong>{filteredDataSelector.searchType === 'album' ? 'Album Name' : 'User Name'}</strong> {' '}
+                        found ({filteredDataSelector.filteredData.length})
+                    </span>
+                    <span className='content'>"{filteredDataSelector.searchInput}"</span>
+                </SearchQueryBox>
+            )}
+            
             
             <Container addpadding={true}>
                 <AlbumCard nopadding={false} />

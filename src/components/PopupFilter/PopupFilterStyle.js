@@ -49,7 +49,17 @@ export const PopupContent = styled.div`
             weight: TextWeight.medium,
             color: Color.darkLight,
         })}
-        padding: 0 0 20px;
+        margin: 0 0 20px;
+    }
+    span.copyRed {
+        ${Font({
+            size: TextSize.body.nm,
+            weight: TextWeight.medium,
+            color: Color.danger,
+        })}
+        cursor: pointer;
+        margin: 0 0 20px;
+        border-bottom: 1px solid ${Color.danger};
     }
 
     div.options {

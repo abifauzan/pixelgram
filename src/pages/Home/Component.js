@@ -180,3 +180,31 @@ export const AvatarItem = styled.div`
         grid-column-end: 3;
     }
 `
+
+export const SearchQueryBox = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 16px 30px;
+    text-align: center;
+
+    span.title {
+        ${Font({
+            size: TextSize.body.nm,
+            weight: TextWeight.reguler,
+            color: Color.darkLight,
+        })}
+
+        strong {
+            font-weight: bold;
+            color: ${Color.dark};
+        }
+    }
+    span.content {
+        ${Font({
+            size: TextSize.body.xl,
+            weight: TextWeight.bold,
+        })}
+    }
+`
