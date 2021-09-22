@@ -11,8 +11,21 @@ import {
     AvatarItem,
 } from './Component'
 import AlbumCard from '../../components/AlbumCard/AlbumCard';
+import {
+    selectProfile,
+    loginUser,
+} from '../../redux/profileSlice'
+import { useSelector, useDispatch } from 'react-redux';
+import {
+    useGetUsersQuery,
+    useGetAlbumsQuery,
+    useGetPhotosQuery,
+} from '../../services/albumApi'
+import { checkObjectLength } from '../../helpers/helpers';
+import Loading from '../../components/Loading/Loading';
+import { useHistory } from 'react-router';
 
-const Hero = (props) => {
+const Hero = ({ profileData }) => {
 
     return (
         <Container fluid center>
@@ -21,12 +34,14 @@ const Hero = (props) => {
                 <span>PXL.GRAM</span>
             </LogoStyled>
 
-            <HeroCaption>
-                Welcome, <br />
-                <Link to='/'>
-                    Abi Fauzan
-                </Link>
-            </HeroCaption>
+            {checkObjectLength(profileData) ? (
+                <HeroCaption>
+                    Welcome, <br />
+                    <Link to='/profile'>
+                        {profileData.name}
+                    </Link>
+                </HeroCaption>
+            ) : <Loading />}
 
             <HeroSubCaption>
                 pxl.gram is literally world's best photo gallery app for your album collections.
@@ -44,7 +59,7 @@ const FilterSearch = () => {
     )
 }
 
-const SplashPage = () => {
+const SplashPage = ({ dataUsers, isLoading, dispatch }) => {
 
     return (
         <SplashContainer>
@@ -59,23 +74,32 @@ const SplashPage = () => {
 
             <span className='desc'>Choose your avatar</span>
 
-            <AvatarGrid>
-                {Array(10).fill().map((_, index) => (
-                    <AvatarItem key={index}><img src='https://via.placeholder.com/150/92c952' alt='img' /> </AvatarItem>
-                ))}
-            </AvatarGrid>
+            {isLoading ? (<Loading />) : (
+                <AvatarGrid>
+                    {!isLoading && checkObjectLength(dataUsers) && dataUsers.map((el, index) => (
+                        <AvatarItem 
+                            key={index}
+                            onClick={() => {
+                                dispatch(loginUser(el))
+                            }}
+                        ><img src='https://via.placeholder.com/150/92c952' alt={`avatar-${el.name}`} /></AvatarItem>
+                    ))}
+                </AvatarGrid>
+            )}
         </SplashContainer>
     )
 }
 
-const LoggedInComp = () => {
+const LoggedInComp = ({ profileData }) => {
 
     return (
         <Flex direction='column'>
-            <Hero />
+            <Hero profileData={profileData} />
             
             <Container addpadding={true}>
-                <AlbumCard nopadding={false} />
+                <AlbumCard 
+                    nopadding={false} 
+                />
 
             </Container>
         </Flex>
@@ -83,9 +107,24 @@ const LoggedInComp = () => {
 }
 
 function Home(props) {
-    return (
-        <SplashPage />
-        // <LoggedInComp />
+
+    const { data: dataUsers, error: errorUsers, isLoading: isLoadingUsers } = useGetUsersQuery()
+
+    const profileData = useSelector(selectProfile)
+    const dispatch = useDispatch()
+
+    const isLoggedin = checkObjectLength(profileData) ? true : false;
+
+    return isLoggedin ? (
+        <LoggedInComp 
+            profileData={profileData}
+        />
+    ) : (
+        <SplashPage 
+            dataUsers={dataUsers}
+            isLoading={isLoadingUsers}
+            dispatch={dispatch}
+        />
     );
 }
 

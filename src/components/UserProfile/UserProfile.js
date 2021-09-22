@@ -8,8 +8,21 @@ import MainLayout from '../Layout/Layout';
 import PhotoCard from '../PhotoCard/PhotoCard';
 import AlbumCard from '../AlbumCard/AlbumCard';
 
-function UserProfile({ mode, data }) {
+function UserProfile(props) {
+    const {
+        mode, 
+        data, 
+        dispatch, 
+        logoutUser, 
+        history,
+    } = props
+
     const [page, setPage] = useState('favorites')
+
+    const handleLogout = () => {
+        dispatch(logoutUser())
+        history.push('/')
+    }
 
     return (
         <MainLayout nopadding>
@@ -22,7 +35,7 @@ function UserProfile({ mode, data }) {
                         <span className='welcome'>Welcome, </span>
                         <span className='name'>Chelsey Dietrich</span>
                     </div>
-                    <button>
+                    <button onClick={handleLogout}>
                         <IoLogOutOutline />
                     </button>
                 </Profile>
