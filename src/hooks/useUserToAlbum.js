@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import {
-    useGetUsersQuery,
-    useGetAlbumsQuery,
-    useGetPhotosQuery,
+    albumApi
 } from '../services/albumApi'
-import { checkObjectLength } from '../helpers/helpers';
 
 function useUserToAlbum({userId}) {
     const [data, setData] = useState({})
 
-    const fetchUsers = useGetUsersQuery()
+    const { data: dataUsers, error, isLoading } = albumApi.endpoints.getUsers.useQueryState()
 
     useEffect(() => {
-        if (!fetchUsers.isLoading && fetchUsers.data.length > 0) {
-            const dataFiltered = fetchUsers.data.filter(el => el.id === userId)
+        if (isLoading === false && dataUsers !== undefined && dataUsers.length > 0 && userId !== undefined) {
+            const dataFiltered = dataUsers.filter(el => el.id === userId)
             const obj = {
                 id: dataFiltered[0].id,
                 name: dataFiltered[0].name,
             }
             setData(obj)
         }
-    }, [userId, fetchUsers])
+    }, [userId, dataUsers, isLoading])
 
     return {
         data

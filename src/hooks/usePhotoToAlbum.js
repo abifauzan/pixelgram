@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import {
-    useGetUsersQuery,
-    useGetAlbumsQuery,
-    useGetPhotosQuery,
+    albumApi
 } from '../services/albumApi'
-import { checkObjectLength } from '../helpers/helpers';
 
-function usePhotoToAlbum({albumId, isThumbnail}) {
+function usePhotoToAlbum({albumId, isThumbnail = false}) {
     const [data, setData] = useState([])
 
-    const fetchPhotos = useGetPhotosQuery()
+    const { data: dataPhotos, error, isLoading } = albumApi.endpoints.getPhotos.useQueryState()
 
     useEffect(() => {
-        if (!fetchPhotos.isLoading && fetchPhotos.data.length > 0) {
+        if (isLoading === false && dataPhotos !== undefined && dataPhotos.length > 0) {
             if (isThumbnail) {
-                const dataFiltered = fetchPhotos.data.filter(el => el.albumId === albumId).slice(0,3)
+                const dataFiltered = dataPhotos.filter(el => el.albumId === Number(albumId)).slice(0,3)
                 setData(dataFiltered)
             } else {
-                const dataFiltered = fetchPhotos.data.filter(el => el.albumId === albumId)
+                const dataFiltered = dataPhotos.filter(el => el.albumId === Number(albumId))
                 setData(dataFiltered)
             }
             
         }
-    }, [albumId, fetchPhotos, isThumbnail])
+    }, [albumId, dataPhotos, isThumbnail, isLoading])
 
     return {
         data

@@ -9,6 +9,9 @@ export const albumApi = createApi({
         getAlbums: builder.query({
             query: () => 'albums',
         }),
+        getAlbumsDetail: builder.query({
+            query: (id) => `albums/${id}`,
+        }),
         getUsers: builder.query({
             query: () => 'users',
         }),
@@ -20,6 +23,7 @@ export const albumApi = createApi({
 
 export const { 
     useGetAlbumsQuery, 
+    useGetAlbumsDetailQuery, 
     useGetUsersQuery,
     useGetPhotosQuery,
 } = albumApi

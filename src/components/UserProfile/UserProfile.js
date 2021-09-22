@@ -62,7 +62,7 @@ function UserProfile(props) {
                         <span>Profile</span>
                     </TabItem>
                 </TabHeader>
-                <TabContent active={page==='favorites'}>
+                {/* <TabContent active={page==='favorites'}>
                     <PhotoCard />
                 </TabContent>
                 <TabContent active={page==='albums'}>
@@ -98,7 +98,7 @@ function UserProfile(props) {
                             <span className='content'>hildegard.org</span>
                         </ProfileData>
                     </ProfileDataContainer>
-                </TabContent>
+                </TabContent> */}
             </ProfileContainer>
         </MainLayout>
     );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Flex, Container } from '../../components/Layout/Layout';
 import { Link } from 'react-router-dom';
 import glasses_img from '../../assets/image/glasses.png'
@@ -16,14 +16,12 @@ import {
     loginUser,
 } from '../../redux/profileSlice'
 import { useSelector, useDispatch } from 'react-redux';
-import {
-    useGetUsersQuery,
-    useGetAlbumsQuery,
-    useGetPhotosQuery,
-} from '../../services/albumApi'
+import { albumApi } from '../../services/albumApi'
 import { checkObjectLength } from '../../helpers/helpers';
 import Loading from '../../components/Loading/Loading';
 import { useHistory } from 'react-router';
+import FloatingButton from '../../components/FloatingButton/FloatingButton';
+import PopupFilter from '../../components/PopupFilter/PopupFilter';
 
 const Hero = ({ profileData }) => {
 
@@ -50,18 +48,13 @@ const Hero = ({ profileData }) => {
     )
 }
 
-const FilterSearch = () => {
+const SplashPage = ({ dataUsers }) => {
 
-    return (
-        <div>
+    const dispatch = useDispatch()
+    const { data, error, isLoading } = dataUsers
 
-        </div>
-    )
-}
-
-const SplashPage = ({ dataUsers, isLoading, dispatch }) => {
-
-    return (
+    // return <Loading />
+    return isLoading ? (<Loading />) : (
         <SplashContainer>
             <LogoStyled to='/'>
                 <img src={glasses_img} alt='Logo' />
@@ -74,9 +67,9 @@ const SplashPage = ({ dataUsers, isLoading, dispatch }) => {
 
             <span className='desc'>Choose your avatar</span>
 
-            {isLoading ? (<Loading />) : (
+            {data === undefined ? (<Loading />) : (
                 <AvatarGrid>
-                    {!isLoading && checkObjectLength(dataUsers) && dataUsers.map((el, index) => (
+                    {data.map((el, index) => (
                         <AvatarItem 
                             key={index}
                             onClick={() => {
@@ -91,30 +84,36 @@ const SplashPage = ({ dataUsers, isLoading, dispatch }) => {
 }
 
 const LoggedInComp = ({ profileData }) => {
+    const [hasPopup, setHasPopup] = useState(false)
 
     return (
         <Flex direction='column'>
             <Hero profileData={profileData} />
             
             <Container addpadding={true}>
-                <AlbumCard 
-                    nopadding={false} 
-                />
-
+                <AlbumCard nopadding={false} />
             </Container>
+
+            <FloatingButton setHasPopup={setHasPopup} />
+            {hasPopup && <PopupFilter setHasPopup={setHasPopup} />}
+            
         </Flex>
     )
 }
 
 function Home(props) {
 
-    const { data: dataUsers, error: errorUsers, isLoading: isLoadingUsers } = useGetUsersQuery()
+    const dataUsers = albumApi.endpoints.getUsers.useQueryState()
+    const albums = albumApi.endpoints.getAlbums.useQueryState()
+    const photos = albumApi.endpoints.getPhotos.useQueryState()
+
+    // console.log(users)
 
     const profileData = useSelector(selectProfile)
-    const dispatch = useDispatch()
 
     const isLoggedin = checkObjectLength(profileData) ? true : false;
 
+    // return <Loading />
     return isLoggedin ? (
         <LoggedInComp 
             profileData={profileData}
@@ -122,8 +121,6 @@ function Home(props) {
     ) : (
         <SplashPage 
             dataUsers={dataUsers}
-            isLoading={isLoadingUsers}
-            dispatch={dispatch}
         />
     );
 }

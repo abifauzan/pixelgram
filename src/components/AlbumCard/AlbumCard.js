@@ -2,23 +2,35 @@ import React from 'react';
 import Button from '../Button/Button';
 import { ButtonUser, Item, ItemName, Main, StackImg } from './AlbumCardStyle';
 import {
-    useGetUsersQuery,
-    useGetAlbumsQuery,
-    useGetPhotosQuery,
+    albumApi
 } from '../../services/albumApi'
+import {
+    selectProfile,
+} from '../../redux/profileSlice'
+import { useSelector, useDispatch } from 'react-redux';
 import Loading from '../Loading/Loading';
 import usePhotoToAlbum from '../../hooks/usePhotoToAlbum';
 import useUserToAlbum from '../../hooks/useUserToAlbum';
+import { useHistory } from 'react-router';
+import { checkObjectLength } from '../../helpers/helpers';
 
 const AlbumSingle = ({ index, mode, albumData }) => {
 
-    const { data: photosData } = usePhotoToAlbum({albumId: albumData.id, isThumbnail: true})
-    const { data: userData } = useUserToAlbum({ userId: albumData.userId })
-    // console.log(userData)
+    const history = useHistory()
 
-    return (
+    const { data: photosData } = usePhotoToAlbum({albumId: albumData.id, isThumbnail: true}) // array
+    const { data: userData } = useUserToAlbum({ userId: albumData.userId }) // object
+
+    const goToAlbum = () => {
+        history.push(`/album/${albumData.id}`)
+    }
+
+    // console.log(userData)
+    // return <Loading />
+
+    return photosData.length > 0 && checkObjectLength(userData) ? (
         <Item>
-            <StackImg>
+            <StackImg onClick={goToAlbum}>
                 {photosData.map((el, index) => (
                     <img 
                         key={`${index}-${el.albumId}`}
@@ -49,25 +61,31 @@ const AlbumSingle = ({ index, mode, albumData }) => {
                         By: {userData.name}
                     </Button>
                 </ButtonUser>
-                
             )}
             
         </Item>
-    )
+    ) : (<Loading />)
 }
 
 function AlbumCard({ nopadding = false, mode = 'default' }) {
 
-    const { data, error, isLoading } = useGetAlbumsQuery()
+    const profileData = useSelector(selectProfile)
+
+    const dataAlbums = albumApi.endpoints.getAlbums.useQueryState()
+    const { data, error, isLoading } = dataAlbums
+
+    const albumData = data?.filter(el => el.userId !== profileData.id)
+
+    // console.log(albumData)
+    // return <Loading /> 
 
     return isLoading ? <Loading /> : (
         <Main nopadding={false}>
-            {!isLoading && data.length > 0 && data.slice(0, 10).map((el, index) => (
+            {albumData !== undefined && albumData.length > 0 && albumData.map((el, index) => (
                 <AlbumSingle 
-                    index={index}
+                    key={index}
                     albumData={el}
                     mode={mode}
-                    key={index}
                 />
             ))}
             

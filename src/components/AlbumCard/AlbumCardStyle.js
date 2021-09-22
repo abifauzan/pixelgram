@@ -8,6 +8,7 @@ export const Main = styled.div`
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     column-gap: 20px;
     row-gap: 50px;
+    padding: 0 0 32px;
     /* padding: ${({ nopadding }) => nopadding === true ? '0' : '0 16px'}; */
 
     ${Media.tab`

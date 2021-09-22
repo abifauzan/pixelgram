@@ -6,15 +6,25 @@ import NotFound from './pages/404/404';
 import AlbumDetail from './pages/AlbumDetail/AlbumDetail';
 import PhotoDetail from './pages/PhotoDetail/PhotoDetail';
 import Profile from './pages/Profile/Profile';
+import {
+  useGetUsersQuery,
+  useGetAlbumsQuery,
+  useGetPhotosQuery,
+} from './services/albumApi'
 
 function App() {
+
+  const dataAlbums = useGetAlbumsQuery()
+  const dataUsers = useGetUsersQuery()
+  const dataPhotos = useGetPhotosQuery()
+
   return (
     <>
       <GlobalStyles />
       <Switch>
         <Route path='/' component={Home} exact />
-        <Route path='/album/:name' component={AlbumDetail} exact />
-        <Route path='/photo/:name' component={PhotoDetail} exact />
+        <Route path='/album/:id' component={AlbumDetail} exact />
+        <Route path='/photo/:id' component={PhotoDetail} exact />
         <Route path='/profile' component={Profile} exact />
         <Route component={NotFound} />
       </Switch>

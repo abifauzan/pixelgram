@@ -6,6 +6,7 @@ import glasses_img from '../../assets/image/glasses.png'
 import Button from "../Button/Button";
 import Color from '../../styles/Color';
 import bg_header from '../../assets/image/bg_header.jpg';
+import { useLocation, useHistory } from "react-router";
 
 export const Flex = styled.main`
     width: 100%;
@@ -118,6 +119,9 @@ const MainContent = styled(Container)`
 
 const MainLayout = ({ children, nopadding }) => {
 
+    const history = useHistory()
+    const { pathname } = useLocation()
+
     return (
         <Main>
             <MainHeader>
@@ -126,8 +130,11 @@ const MainLayout = ({ children, nopadding }) => {
                         <img src={glasses_img} alt='Logo' />
                         <span>PXL.GRAM</span>
                     </LogoStyled>
-                    <Button>
-                        Profile
+                    <Button onclick={() => {
+                        if (pathname.includes('/profile')) history.push('/')
+                        else history.push('/profile')
+                    }}>
+                        {pathname.includes('/profile') ? 'Home' : 'Profile'}
                     </Button>
                 </MainNavbar>
             </MainHeader>

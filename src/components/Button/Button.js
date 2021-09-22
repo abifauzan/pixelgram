@@ -5,7 +5,7 @@ import { ButtonStyled } from './ButtonStyle';
 function Button({ onclick, children}) {
 
     return (
-        <ButtonStyled>
+        <ButtonStyled onClick={onclick}>
             {children}
         </ButtonStyled>
     );

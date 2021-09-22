@@ -1,18 +1,25 @@
 import React from 'react';
+import Loading from '../Loading/Loading';
 import { Item, Image, Main, ItemName } from './PhotoCardStyle';
+import { useHistory } from 'react-router';
 
-function PhotoCard({ data }) {
-    return (
+function PhotoCard({ photosData }) {
+
+    const history = useHistory()
+
+    return photosData.length > 0 ? (
         <Main>
-            {Array(5).fill().map((_, index) => (
-                <Item key={index}>
-                    <Image src='https://via.placeholder.com/600/45935c' alt='picture' />
-                    <ItemName>illo qui vel laboriosam vel fugit deserunt</ItemName>
+            {photosData.map((el, index) => (
+                <Item 
+                    key={`${index}-${el.id}`}
+                    onClick={() => history.push(`/photo/${el.id}`)}
+                >
+                    <Image src={el.url} alt={el.title} />
+                    <ItemName>{el.title}</ItemName>
                 </Item>
             ))}
         </Main>
-        
-    );
+    ) : (<Loading />);
 }
 
 export default PhotoCard;

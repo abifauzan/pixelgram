@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect} from 'react';
 import { ButtonStyled } from '../../components/Button/ButtonStyle';
 import { ButtonAction, ButtonClose, MobileContainer, MobileContent, DesktopContent, DesktopCommentArea } from './PhotoDetailStyle';
 import { BiCommentDetail } from 'react-icons/bi'
@@ -10,6 +10,15 @@ import MainLayout, { HeaderGoBack } from '../../components/Layout/Layout';
 import styled from 'styled-components';
 import { Subtitle, Title, DesktopMain, DesktopCommentList, CommentArea, CommentSingle } from './PhotoDetailStyle';
 import { Link } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router';
+import {
+    albumApi,
+} from '../../services/albumApi'
+import Loading from '../../components/Loading/Loading';
+import { checkObjectLength } from '../../helpers/helpers';
+import useIsMobile from '../../hooks/useIsMobile';
+import useAlbumToPhoto from '../../hooks/useAlbumToPhoto';
+import useUserToAlbum from '../../hooks/useUserToAlbum';
 
 const ButtonBack = styled(ButtonStyled)`
     padding: 2px;
@@ -22,32 +31,37 @@ const ButtonBack = styled(ButtonStyled)`
     }
 `
 
-const MobileView = () => {
+const MobileView = ({ findPhoto, dataAlbums, dataUsers }) => {
+    const history = useHistory()
 
-    return (
-        <MobileContainer img='https://via.placeholder.com/600/363789'>
-            <MobileContent>
-                <div className='users'>
-                    <div className='avatar' />
-                    <div className='userInfo'>
-                        <span className='username'>Kurtis Weissnat</span>
-                        <span className='album'>qui quasi nihil aut voluptatum sit dolore minima</span>
+    // return <Loading />
+
+    return findPhoto !== undefined ? (
+        <MobileContainer img={findPhoto.url}>
+            {checkObjectLength(dataUsers) && checkObjectLength(dataAlbums) && dataAlbums !== undefined && (
+                <MobileContent>
+                    <div className='users'>
+                        <div className='avatar' />
+                        <div className='userInfo'>
+                            <span className='username'>{dataUsers.name}</span>
+                            <span className='album'>{dataAlbums.title}</span>
+                        </div>
                     </div>
-                </div>
-                <div className='icons'>
-                    <ButtonAction>
-                        <BiCommentDetail />
-                    </ButtonAction>
-                    <ButtonAction>
-                        <AiFillHeart />
-                    </ButtonAction>
-                </div>
-            </MobileContent>
-            <ButtonClose>
+                    <div className='icons'>
+                        <ButtonAction>
+                            <BiCommentDetail />
+                        </ButtonAction>
+                        <ButtonAction>
+                            <AiFillHeart />
+                        </ButtonAction>
+                    </div>
+                </MobileContent>
+            ) }
+            <ButtonClose onClick={() => history.goBack()}>
                 <GrFormClose />
             </ButtonClose>
         </MobileContainer>
-    )
+    ) : (<Loading />)
 }
 
 const DesktopView = () => {
@@ -117,11 +131,34 @@ const DesktopView = () => {
 }
 
 function PhotoDetail(props) {
+
+    const { id } = useParams()
+
+    const isMobile = useIsMobile()
+
+    const { data: dataPhotos } = albumApi.endpoints.getPhotos.useQueryState() // undefined
+    const findPhoto = dataPhotos?.find(el => el.id === Number(id)) // undefined
+
+    const { data: dataAlbums } = useAlbumToPhoto({ albumId: findPhoto?.albumId })
+    const { data: dataUsers } = useUserToAlbum({ userId: dataAlbums?.userId})
+    // console.log(dataUsers)
+
     return (
         <main>
+            {isMobile 
+                ? 
+                <MobileView 
+                    findPhoto={findPhoto} 
+                    dataAlbums={dataAlbums}
+                    dataUsers={dataUsers}
+                /> 
+                : 
+                <DesktopView 
+                    findPhoto={findPhoto} 
+                    dataAlbums={dataAlbums}
+                    dataUsers={dataUsers}
+                />}
             {/* <PopupComment /> */}
-            <MobileView />
-            {/* <DesktopView /> */}
         </main>
     );
 }
