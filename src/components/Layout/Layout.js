@@ -22,6 +22,7 @@ export const Container = styled.section`
     display: flex;
     flex-direction: column;
     text-align: ${({ center }) => center ? 'center' : 'left'};
+    padding: ${({ addpadding }) => addpadding ? '0 16px' : '0'};
 `
 
 export const HeaderGoBack = styled.div`
@@ -106,7 +107,7 @@ const LogoStyled = styled(Link)`
 const MainContent = styled(Container)`
     background: ${Color.white};
     width: calc(100vw - 32px);
-    padding: 30px 16px;
+    padding: ${({ nopadding }) => nopadding ? '30px 0' : '30px 16px'};
     position: relative;
     margin-top: -80px;
 
@@ -115,7 +116,7 @@ const MainContent = styled(Container)`
     `}
 `
 
-const MainLayout = ({ children }) => {
+const MainLayout = ({ children, nopadding }) => {
 
     return (
         <Main>
@@ -131,7 +132,7 @@ const MainLayout = ({ children }) => {
                 </MainNavbar>
             </MainHeader>
 
-            <MainContent>
+            <MainContent nopadding={nopadding}>
                 {children}
             </MainContent>
         </Main>

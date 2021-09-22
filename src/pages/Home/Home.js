@@ -6,6 +6,9 @@ import {
     LogoStyled,
     HeroCaption,
     HeroSubCaption,
+    SplashContainer,
+    AvatarGrid,
+    AvatarItem,
 } from './Component'
 import AlbumCard from '../../components/AlbumCard/AlbumCard';
 
@@ -41,16 +44,48 @@ const FilterSearch = () => {
     )
 }
 
-function Home(props) {
+const SplashPage = () => {
+
+    return (
+        <SplashContainer>
+            <LogoStyled to='/'>
+                <img src={glasses_img} alt='Logo' />
+                <span>PXL.GRAM</span>
+            </LogoStyled>
+            <h2>
+                Hey, <br/>
+                <span>let's get you started</span>
+            </h2>
+
+            <span className='desc'>Choose your avatar</span>
+
+            <AvatarGrid>
+                {Array(10).fill().map((_, index) => (
+                    <AvatarItem key={index}><img src='https://via.placeholder.com/150/92c952' alt='img' /> </AvatarItem>
+                ))}
+            </AvatarGrid>
+        </SplashContainer>
+    )
+}
+
+const LoggedInComp = () => {
+
     return (
         <Flex direction='column'>
             <Hero />
             
-            <Container>
-                <AlbumCard />
+            <Container addpadding={true}>
+                <AlbumCard nopadding={false} />
 
             </Container>
         </Flex>
+    )
+}
+
+function Home(props) {
+    return (
+        <SplashPage />
+        // <LoggedInComp />
     );
 }
 

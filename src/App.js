@@ -5,6 +5,7 @@ import { GlobalStyles } from './styles/GlobalStyle';
 import NotFound from './pages/404/404';
 import AlbumDetail from './pages/AlbumDetail/AlbumDetail';
 import PhotoDetail from './pages/PhotoDetail/PhotoDetail';
+import Profile from './pages/Profile/Profile';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path='/' component={Home} exact />
         <Route path='/album/:name' component={AlbumDetail} exact />
         <Route path='/photo/:name' component={PhotoDetail} exact />
+        <Route path='/profile' component={Profile} exact />
         <Route component={NotFound} />
       </Switch>
     </>

@@ -2,9 +2,9 @@ import React from 'react';
 import Button from '../Button/Button';
 import { Item, ItemName, Main, StackImg } from './AlbumCardStyle';
 
-function AlbumCard(props) {
+function AlbumCard({ nopadding = false, mode }) {
     return (
-        <Main>
+        <Main nopadding={nopadding}>
             {Array(5).fill().map((_, index) => (
                 <Item key={index}>
                     <StackImg>

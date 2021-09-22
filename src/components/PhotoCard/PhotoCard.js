@@ -1,7 +1,7 @@
 import React from 'react';
 import { Item, Image, Main, ItemName } from './PhotoCardStyle';
 
-function PhotoCard(props) {
+function PhotoCard({ data }) {
     return (
         <Main>
             {Array(5).fill().map((_, index) => (

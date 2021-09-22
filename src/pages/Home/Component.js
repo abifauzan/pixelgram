@@ -39,6 +39,7 @@ export const LogoStyled = styled(Link)`
 
 export const HeroCaption = styled.h2`
     margin: 0;
+    padding: 20px 0;
     ${Font({
         size: TextSize.heading.xxl,
         color: Color.darkLight,
@@ -108,5 +109,74 @@ export const FilterBox = styled.div`
 
     button {
         
+    }
+`
+
+export const SplashContainer = styled.main`
+    width: 100vw;
+    min-height: 100vh;
+    background: ${Color.white};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    h2 {
+        ${Font({
+            size: '3rem',
+            weight: TextWeight.medium,
+            lineHeight: '2rem'
+        })}
+        text-align: center;
+        padding: 16px 0 30px;
+
+        span {
+            ${Font({
+                size: '1.5rem',
+                color: Color.primary,
+                weight: TextWeight.medium,
+                lineHeight: '2rem'
+            })}
+        }
+    }
+
+    span.desc {
+        ${Font({
+            size: TextSize.heading.sm,
+            weight: TextWeight.medium,
+        })}
+        padding: 0 0 20px;
+    }
+`
+
+export const AvatarGrid = styled.div`
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 70px);
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+    row-gap: 20px;
+    padding: 0 50px;
+
+    /* ${Media.tab`
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    `}   */
+`
+
+export const AvatarItem = styled.div`
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    border-radius: 999px;
+    
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 999px;
+    }
+
+    &:last-child:nth-child(3n-2) {
+        grid-column-end: 3;
     }
 `
