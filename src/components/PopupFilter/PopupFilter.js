@@ -22,7 +22,7 @@ function PopupFilter({ setHasPopup }) {
     const { data: dataAlbums } = albumApi.endpoints.getAlbums.useQueryState()
     const { data: dataUsers } = albumApi.endpoints.getUsers.useQueryState()
 
-    // console.log(dataUsers)
+    // console.log(searchActive)
 
     const handleSubmit = async () => {
         if (searchInput === '') {
@@ -30,18 +30,28 @@ function PopupFilter({ setHasPopup }) {
         } else {
             // TODO
             if (searchActive === 'album') {
-                const processData = await dataAlbums
-                const filteredData = await processData.filter(el => el.title.includes(searchInput))
+                const processData = dataAlbums
+                const filteredData = processData.filter(el => el.title.toLowerCase().includes(searchInput.toLowerCase()))
                 dispatch(searchData({
                     searchType: searchActive,
                     searchInput,
                     filteredData,
                 }))
             } else {
+                const processData = dataUsers
+                const processDataAlbum = dataAlbums
+                const filteredUsers = processData.filter(el => el.name.toLowerCase().includes(searchInput.toLowerCase()))
+                const filteredData = processDataAlbum.filter(({ userId }) => filteredUsers.some(({ id }) => id === userId))
 
+                dispatch(searchData({
+                    searchType: searchActive,
+                    searchInput,
+                    filteredData,
+                }))
             }
             
             setHasPopup(false)
+            setSearchInput('')
         }
     }
 
@@ -75,6 +85,7 @@ function PopupFilter({ setHasPopup }) {
                     type='text'
                     name='search'
                     placeholder='Search album...'
+                    value={searchInput}
                     autoComplete="off"
                     onChange={(e) => setSearchInput(e.target.value)}
                     error={error}

@@ -89,11 +89,13 @@ const LoggedInComp = ({ profileData, dataAlbums }) => {
     const [hasPopup, setHasPopup] = useState(false)
 
     const filteredDataSelector = useSelector(selectData)
-    // console.log(filteredDataSelector)
 
     const { data, error, isLoading } = dataAlbums
 
-    const albumData = data?.filter(el => el.userId !== profileData.id)
+    const fetchAllAlbumData = data?.filter(el => el.userId !== profileData.id)
+    const fetchFilteredData = checkObjectLength(filteredDataSelector) && filteredDataSelector.filteredData.filter(el => el.userId !== profileData.id)
+
+    const albumData = fetchFilteredData !== false ? fetchFilteredData : fetchAllAlbumData
 
     return (
         <Flex direction='column'>
@@ -110,10 +112,13 @@ const LoggedInComp = ({ profileData, dataAlbums }) => {
             )}
             
             <Container addpadding={true}>
-                <AlbumCard 
-                    nopadding={false} 
-                    albumData={albumData}
-                />
+                {albumData !== undefined ? (
+                    <AlbumCard 
+                        nopadding={false} 
+                        albumData={albumData}
+                    />
+                ) : (<Loading />)}
+                
             </Container>
 
             <FloatingButton setHasPopup={setHasPopup} />
