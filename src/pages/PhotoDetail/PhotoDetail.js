@@ -51,6 +51,8 @@ const handleFavorite = ({dataPhoto, dataUsers, status, dispatch}) => {
 }
 
 const MobileView = ({ findPhoto, dataAlbums, dataUsers, isFavorite, dispatch }) => {
+    const [showPopup, setShowPopup] = useState(false)
+
     const history = useHistory()
 
     // return <Loading />
@@ -67,7 +69,7 @@ const MobileView = ({ findPhoto, dataAlbums, dataUsers, isFavorite, dispatch }) 
                         </div>
                     </div>
                     <div className='icons'>
-                        <ButtonAction>
+                        <ButtonAction onClick={() => setShowPopup(true)}>
                             <BiCommentDetail />
                         </ButtonAction>
                         <ButtonAction 
@@ -89,6 +91,15 @@ const MobileView = ({ findPhoto, dataAlbums, dataUsers, isFavorite, dispatch }) 
             <ButtonClose onClick={() => history.goBack()}>
                 <GrFormClose />
             </ButtonClose>
+
+            {showPopup && (
+                <PopupComment 
+                    setShowPopup={setShowPopup}
+                    findPhoto={findPhoto}
+                    dataAlbums={dataAlbums}
+                    dataUsers={dataUsers}
+                />
+            ) }
         </MobileContainer>
     ) : (<Loading />)
 }
@@ -208,7 +219,7 @@ function PhotoDetail(props) {
     }, [favoritesData, id])
 
     return (
-        <main>
+        <>
             {isMobile 
                 ? 
                 <MobileView 
@@ -227,7 +238,7 @@ function PhotoDetail(props) {
                     dispatch={dispatch}
                 />}
             {/* <PopupComment /> */}
-        </main>
+        </>
     );
 }
 

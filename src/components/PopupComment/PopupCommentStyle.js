@@ -122,13 +122,18 @@ export const CommentInput = styled.div`
     }
 
     button {
-        padding: 15px 20px;
+        padding: 13px 20px;
         background: ${Color.primary};
         text-align: center;
         border-radius: 25px;
         position: absolute;
         top: 0;
         right: 0;
+        border: 1px solid transparent;
+
+        &:disabled {
+            background: ${Color.grey};
+        }
 
         ${Font({
             size: TextSize.body.sm,
