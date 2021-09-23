@@ -46,7 +46,7 @@ function PopupComment({ setShowPopup, findPhoto, dataAlbums, dataUsers }) {
             <CommentArea>
             {dataComments.length > 0 ? dataComments.map((el, index) => (
                 <CommentSingle key={el.id}>
-                    <div className='avatar' />
+                    <img src='https://i.pravatar.cc/300' className='avatar' alt='avatar' />
                     <div className='content'>
                         <span className='username'>{el.userName}</span>
                         <span className='comment'>

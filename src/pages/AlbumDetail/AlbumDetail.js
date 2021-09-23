@@ -62,7 +62,7 @@ function AlbumDetail(props) {
                     {findAlbum.title}
                 </Title>
                 <Subtitle>
-                    Owned by: <Link to='/'> {userData.name} </Link>
+                    Owned by: <Link to={`/user/${userData.username}`}> {userData.name} </Link>
                 </Subtitle>
 
                 <PhotoCard 

@@ -25,6 +25,10 @@ const AlbumSingle = ({ index, mode, albumData }) => {
         history.push(`/album/${albumData.id}`)
     }
 
+    const goToUser = () => {
+        history.push(`/user/${userData.username}`)
+    }
+
     // console.log(userData)
     // return <Loading />
 
@@ -57,7 +61,7 @@ const AlbumSingle = ({ index, mode, albumData }) => {
 
             {mode !== 'profile' && (
                 <ButtonUser>
-                    <Button>
+                    <Button onclick={goToUser}>
                         By: {userData.name}
                     </Button>
                 </ButtonUser>

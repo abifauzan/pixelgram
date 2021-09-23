@@ -18,11 +18,8 @@ import usePhotoToAlbum from '../../hooks/usePhotoToAlbum';
 
 function Profile() {
 
-    const history = useHistory()
-
     const profileData = useSelector(selectProfile)
     const favoritesData = useSelector(selectfavorites)
-    const dispatch = useDispatch()
 
     const { data: albumsData } = useAlbumToUser({ userId: profileData.id})
 
@@ -31,10 +28,6 @@ function Profile() {
             mode='profile' 
             profileData={profileData}
             favoritesData={favoritesData}
-            dispatch={dispatch}
-            logoutUser={logoutUser}
-            history={history}
-            removeAll={removeAll}
             albumsData={albumsData}
         />
     )

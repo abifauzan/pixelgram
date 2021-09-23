@@ -9,7 +9,7 @@ function useAlbumToUser({ userId }) {
     const { data: dataAlbums, error, isLoading } = albumApi.endpoints.getAlbums.useQueryState()
 
     useEffect(() => {
-        if (isLoading === false && dataAlbums !== undefined && dataAlbums.length > 0) {
+        if (isLoading === false && dataAlbums !== undefined && dataAlbums.length > 0 && userId !== undefined) {
             const dataFiltered = dataAlbums.filter(el => el.userId === Number(userId))
             setData(dataFiltered)
         }

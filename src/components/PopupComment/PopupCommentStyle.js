@@ -65,11 +65,10 @@ export const CommentSingle = styled.div`
     align-items: flex-start;
     justify-content: flex-start;
 
-    div.avatar {
+    img.avatar {
         flex-shrink: 0;
         width: 35px;
         height: 35px;
-        background: lightblue;
         border-radius: 999px;
     }
 

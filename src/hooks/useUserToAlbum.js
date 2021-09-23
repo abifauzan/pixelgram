@@ -14,6 +14,7 @@ function useUserToAlbum({userId}) {
             const obj = {
                 id: dataFiltered[0].id,
                 name: dataFiltered[0].name,
+                username: dataFiltered[0].username,
             }
             setData(obj)
         }

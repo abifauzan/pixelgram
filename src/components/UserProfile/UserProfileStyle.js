@@ -45,9 +45,9 @@ export const Profile = styled.section`
             })}
         }
 
-        span.name {
+        span.email {
             ${Font({
-                size: TextSize.body.nm,
+                size: TextSize.body.sm,
                 color: Color.dark,
                 weight: TextWeight.medium,
             })}

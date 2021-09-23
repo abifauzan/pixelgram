@@ -10,18 +10,29 @@ import AlbumCard from '../AlbumCard/AlbumCard';
 import Alert from '../Alert/Alert';
 import { checkObjectLength } from '../../helpers/helpers';
 import usePhotoToAlbum from '../../hooks/usePhotoToAlbum';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+    selectProfile,
+    logoutUser,
+} from '../../redux/profileSlice'
+import {
+    removeAll,
+    selectfavorites,
+} from '../../redux/favoriteSlice'
+import { useHistory } from 'react-router';
+import Loading from '../Loading/Loading';
 
 function UserProfile(props) {
     const {
-        mode, 
+        mode = 'default', 
         profileData, 
         favoritesData, 
-        dispatch, 
-        logoutUser, 
-        history,
-        removeAll,
         albumsData,
+        filteredPhoto,
     } = props
+
+    const dispatch = useDispatch()
+    const history = useHistory()
 
     const [page, setPage] = useState('favorites')
 
@@ -38,11 +49,12 @@ function UserProfile(props) {
             <ProfileContainer>
                 <Profile>
                     <div className='avatar'>
-                        <img src='https://via.placeholder.com/150/771796' alt='avatar' />
+                        <img src='https://i.pravatar.cc/300' alt='avatar' />
                     </div>
                     <div className='user'>
-                        <span className='welcome'>Welcome, </span>
-                        <span className='name'>Chelsey Dietrich</span>
+                        {/* <span className='welcome'>Welcome, </span> */}
+                        <span className='name'>{profileData?.name}</span>
+                        <span className='email'>{profileData?.email}</span>
                     </div>
                     {mode === 'profile' && (
                         <button onClick={handleLogout}>
@@ -57,7 +69,7 @@ function UserProfile(props) {
                         onClick={() => setPage('favorites')}
                     >
                         <MdFavoriteBorder />
-                        <span>Favorites</span>
+                        <span>{mode === 'profile' ? 'Favorites' : 'Photos'}</span>
                     </TabItem>
                     <TabItem
                         active={page==='albums'}
@@ -77,11 +89,20 @@ function UserProfile(props) {
                     )}
                     
                 </TabHeader>
-                <TabContent active={page==='favorites'}>
-                    {checkObjectLength(favoritesData) ? (
-                        <PhotoCard photosData={favoritesData} /> 
-                    ): (<Alert>No data found</Alert>)}
-                </TabContent>
+                {mode === 'profile' ? (
+                    <TabContent active={page==='favorites'}>
+                        {checkObjectLength(favoritesData) ? (
+                            <PhotoCard photosData={favoritesData} /> 
+                        ): (<Alert>No data found</Alert>)}
+                    </TabContent>
+                ) : (
+                    <TabContent active={page==='favorites'}>
+                        {filteredPhoto !== undefined ? (
+                            <PhotoCard photosData={filteredPhoto} /> 
+                        ): (<Loading />)}
+                    </TabContent>
+                )}
+                
                 <TabContent active={page==='albums'}>
                     <AlbumCard 
                         albumData={albumsData}

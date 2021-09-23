@@ -6,6 +6,7 @@ import NotFound from './pages/404/404';
 import AlbumDetail from './pages/AlbumDetail/AlbumDetail';
 import PhotoDetail from './pages/PhotoDetail/PhotoDetail';
 import Profile from './pages/Profile/Profile';
+import UserPage from './pages/UserPage/UserPage';
 import {
   useGetUsersQuery,
   useGetAlbumsQuery,
@@ -25,6 +26,7 @@ function App() {
         <Route path='/' component={Home} exact />
         <Route path='/album/:id' component={AlbumDetail} exact />
         <Route path='/photo/:id' component={PhotoDetail} exact />
+        <Route path='/user/:username' component={UserPage} exact />
         <Route path='/profile' component={Profile} exact />
         <Route component={NotFound} />
       </Switch>
