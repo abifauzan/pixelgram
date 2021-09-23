@@ -15,7 +15,8 @@ export const Flex = styled.main`
     justify-content: ${({ spaceBetween }) => spaceBetween ? 'space-between' : 'flex-start'};
     align-items: center;
     position: relative;
-    overflow: hidden;
+    gap: ${(props) => props.gap20 ? '20px' : '0'};
+    /* overflow: hidden; */
 `
 
 export const Container = styled.section`
@@ -50,8 +51,10 @@ export const HeaderGoBack = styled.div`
 `
 
 const Main = styled(Flex)`
-    width: 100vw;
+    width: 100%;
     flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
 `
 
 const MainHeader = styled.div`

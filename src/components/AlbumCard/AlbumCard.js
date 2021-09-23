@@ -67,19 +67,12 @@ const AlbumSingle = ({ index, mode, albumData }) => {
     ) : (<Loading />)
 }
 
-function AlbumCard({ nopadding = false, mode = 'default' }) {
-
-    const profileData = useSelector(selectProfile)
-
-    const dataAlbums = albumApi.endpoints.getAlbums.useQueryState()
-    const { data, error, isLoading } = dataAlbums
-
-    const albumData = data?.filter(el => el.userId !== profileData.id)
+function AlbumCard({ albumData, nopadding = false, mode = 'default' }) {
 
     // console.log(albumData)
     // return <Loading /> 
 
-    return isLoading ? <Loading /> : (
+    return albumData === undefined ? <Loading /> : (
         <Main nopadding={false}>
             {albumData !== undefined && albumData.length > 0 && albumData.map((el, index) => (
                 <AlbumSingle 

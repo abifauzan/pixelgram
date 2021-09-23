@@ -7,6 +7,9 @@ function PhotoCard({ photosData }) {
 
     const history = useHistory()
 
+    // console.log(photosData)
+    // return <Loading />
+
     return photosData.length > 0 ? (
         <Main>
             {photosData.map((el, index) => (

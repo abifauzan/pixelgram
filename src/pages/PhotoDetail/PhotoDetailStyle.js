@@ -76,10 +76,11 @@ export const ButtonAction = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
-    background: ${Color.white};
+    background: ${(props) => props.active ? Color.secondary : Color.white};
+    border: 1px solid ${Color.darkLight};
 
     svg {
-        color: ${Color.dark};
+        color: ${(props) => props.active ? Color.white : Color.dark};
         width: 20px;
         height: 20px;
     }
@@ -142,6 +143,7 @@ export const DesktopContent = styled.div`
     flex-direction: column;
     gap: 32px;
     padding: 32px 0 0;
+    overflow: hidden;
 `
 
 export const DesktopMain = styled.div`

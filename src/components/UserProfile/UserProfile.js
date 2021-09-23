@@ -7,20 +7,29 @@ import { RiUserLine } from 'react-icons/ri'
 import MainLayout from '../Layout/Layout';
 import PhotoCard from '../PhotoCard/PhotoCard';
 import AlbumCard from '../AlbumCard/AlbumCard';
+import Alert from '../Alert/Alert';
+import { checkObjectLength } from '../../helpers/helpers';
+import usePhotoToAlbum from '../../hooks/usePhotoToAlbum';
 
 function UserProfile(props) {
     const {
         mode, 
-        data, 
+        profileData, 
+        favoritesData, 
         dispatch, 
         logoutUser, 
         history,
+        removeAll,
+        albumsData,
     } = props
 
     const [page, setPage] = useState('favorites')
 
+    // console.log(albumsData.id)
+
     const handleLogout = () => {
         dispatch(logoutUser())
+        dispatch(removeAll())
         history.push('/')
     }
 
@@ -35,9 +44,12 @@ function UserProfile(props) {
                         <span className='welcome'>Welcome, </span>
                         <span className='name'>Chelsey Dietrich</span>
                     </div>
-                    <button onClick={handleLogout}>
-                        <IoLogOutOutline />
-                    </button>
+                    {mode === 'profile' && (
+                        <button onClick={handleLogout}>
+                            <IoLogOutOutline />
+                        </button>
+                    )}
+                    
                 </Profile>
                 <TabHeader mode={mode}>
                     <TabItem 
@@ -54,19 +66,25 @@ function UserProfile(props) {
                         <BsGrid3X3 />
                         <span>Albums</span>
                     </TabItem>
-                    <TabItem
-                        active={page==='profile'}
-                        onClick={() => setPage('profile')}
-                    >
-                        <RiUserLine />
-                        <span>Profile</span>
-                    </TabItem>
+                    {mode === 'profile' && (
+                        <TabItem
+                            active={page==='profile'}
+                            onClick={() => setPage('profile')}
+                        >
+                            <RiUserLine />
+                            <span>Profile</span>
+                        </TabItem>
+                    )}
+                    
                 </TabHeader>
-                {/* <TabContent active={page==='favorites'}>
-                    <PhotoCard />
+                <TabContent active={page==='favorites'}>
+                    {checkObjectLength(favoritesData) ? (
+                        <PhotoCard photosData={favoritesData} /> 
+                    ): (<Alert>No data found</Alert>)}
                 </TabContent>
                 <TabContent active={page==='albums'}>
                     <AlbumCard 
+                        albumData={albumsData}
                         nopadding 
                         mode='profile' 
                     />
@@ -98,7 +116,7 @@ function UserProfile(props) {
                             <span className='content'>hildegard.org</span>
                         </ProfileData>
                     </ProfileDataContainer>
-                </TabContent> */}
+                </TabContent>
             </ProfileContainer>
         </MainLayout>
     );

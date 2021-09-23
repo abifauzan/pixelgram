@@ -85,11 +85,15 @@ const SplashPage = ({ dataUsers }) => {
     )
 }
 
-const LoggedInComp = ({ profileData }) => {
+const LoggedInComp = ({ profileData, dataAlbums }) => {
     const [hasPopup, setHasPopup] = useState(false)
 
     const filteredDataSelector = useSelector(selectData)
-    console.log(filteredDataSelector)
+    // console.log(filteredDataSelector)
+
+    const { data, error, isLoading } = dataAlbums
+
+    const albumData = data?.filter(el => el.userId !== profileData.id)
 
     return (
         <Flex direction='column'>
@@ -105,9 +109,11 @@ const LoggedInComp = ({ profileData }) => {
                 </SearchQueryBox>
             )}
             
-            
             <Container addpadding={true}>
-                <AlbumCard nopadding={false} />
+                <AlbumCard 
+                    nopadding={false} 
+                    albumData={albumData}
+                />
             </Container>
 
             <FloatingButton setHasPopup={setHasPopup} />
@@ -120,7 +126,7 @@ const LoggedInComp = ({ profileData }) => {
 function Home(props) {
 
     const dataUsers = albumApi.endpoints.getUsers.useQueryState()
-    const albums = albumApi.endpoints.getAlbums.useQueryState()
+    const dataAlbums = albumApi.endpoints.getAlbums.useQueryState()
     const photos = albumApi.endpoints.getPhotos.useQueryState()
 
     // console.log(users)
@@ -133,6 +139,7 @@ function Home(props) {
     return isLoggedin ? (
         <LoggedInComp 
             profileData={profileData}
+            dataAlbums={dataAlbums}
         />
     ) : (
         <SplashPage 

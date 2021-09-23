@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import { ButtonStyled } from '../../components/Button/ButtonStyle';
 import { ButtonAction, ButtonClose, MobileContainer, MobileContent, DesktopContent, DesktopCommentArea } from './PhotoDetailStyle';
 import { BiCommentDetail } from 'react-icons/bi'
@@ -6,7 +6,7 @@ import { AiFillHeart } from 'react-icons/ai'
 import { GrFormClose } from 'react-icons/gr'
 import { IoChevronBack } from 'react-icons/io5';
 import PopupComment from '../../components/PopupComment/PopupComment';
-import MainLayout, { HeaderGoBack } from '../../components/Layout/Layout';
+import MainLayout, { Flex, HeaderGoBack } from '../../components/Layout/Layout';
 import styled from 'styled-components';
 import { Subtitle, Title, DesktopMain, DesktopCommentList, CommentArea, CommentSingle } from './PhotoDetailStyle';
 import { Link } from 'react-router-dom';
@@ -19,6 +19,13 @@ import { checkObjectLength } from '../../helpers/helpers';
 import useIsMobile from '../../hooks/useIsMobile';
 import useAlbumToPhoto from '../../hooks/useAlbumToPhoto';
 import useUserToAlbum from '../../hooks/useUserToAlbum';
+import Button from '../../components/Button/Button';
+import { 
+    selectfavorites,
+    addOne,
+    removeOne,
+} from '../../redux/favoriteSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 const ButtonBack = styled(ButtonStyled)`
     padding: 2px;
@@ -31,7 +38,19 @@ const ButtonBack = styled(ButtonStyled)`
     }
 `
 
-const MobileView = ({ findPhoto, dataAlbums, dataUsers }) => {
+const handleFavorite = ({dataPhoto, dataUsers, status, dispatch}) => {
+    // console.log(dataPhoto, dataUsers, status)
+    if (status) {
+        dispatch(removeOne(dataPhoto.id))
+    } else {
+        dispatch(addOne({
+            userId: dataUsers.id,
+            ...dataPhoto
+        }))
+    }
+}
+
+const MobileView = ({ findPhoto, dataAlbums, dataUsers, isFavorite, dispatch }) => {
     const history = useHistory()
 
     // return <Loading />
@@ -51,7 +70,17 @@ const MobileView = ({ findPhoto, dataAlbums, dataUsers }) => {
                         <ButtonAction>
                             <BiCommentDetail />
                         </ButtonAction>
-                        <ButtonAction>
+                        <ButtonAction 
+                            onClick={() => {
+                                handleFavorite({
+                                    dataPhoto: findPhoto,
+                                    dataUsers: dataUsers,
+                                    status: isFavorite,
+                                    dispatch: dispatch,
+                                })
+                            }}
+                            active={isFavorite}
+                        >
                             <AiFillHeart />
                         </ButtonAction>
                     </div>
@@ -64,9 +93,9 @@ const MobileView = ({ findPhoto, dataAlbums, dataUsers }) => {
     ) : (<Loading />)
 }
 
-const DesktopView = () => {
+const DesktopView = ({ findPhoto, dataAlbums, dataUsers, isFavorite, dispatch }) => {
 
-    return (
+    return findPhoto !== undefined ? (
         <MainLayout>
             <HeaderGoBack>
                 <div className='btnBack'>
@@ -78,41 +107,60 @@ const DesktopView = () => {
                 <span> Photo Detail</span>
             </HeaderGoBack>
 
+            {checkObjectLength(dataUsers) && checkObjectLength(dataAlbums) && dataAlbums !== undefined && (
+                <DesktopContent>
+                    <DesktopMain>
+                        <div className='boxImg'>
+                            <img src={findPhoto.url} alt={findPhoto.title} />
+                        </div>
+                        <div className='content'>
+                            <Title>
+                                {findPhoto.title}
+                            </Title>
+                            <Subtitle>
+                                Owned by: <Link to={`/user/${dataUsers.name}`}>{dataUsers.name}</Link>
+                            </Subtitle>
+                            <Subtitle>
+                                Album: <Link to={`/album/${dataAlbums.id}`}>{dataAlbums.title}</Link>
+                            </Subtitle>
+                            <DesktopCommentArea>
+                                <textarea
+                                    name='comment'
+                                    placeholder='Add a Comment..'
+                                ></textarea>
+                                <Flex gap20>
+                                    <Button>
+                                        Add comment
+                                    </Button>
+                                    <Button 
+                                        svg
+                                        filled={isFavorite}
+                                        onclick={() => {
+                                            handleFavorite({
+                                                dataPhoto: findPhoto,
+                                                dataUsers: dataUsers,
+                                                status: isFavorite,
+                                                dispatch: dispatch,
+                                            })
+                                        }}
+                                    >
+                                        <AiFillHeart />
+                                    </Button>
+                                </Flex>
+                                
+                            </DesktopCommentArea>
+                        </div>
+                    </DesktopMain>
+                </DesktopContent>
+            )}
             
-            <DesktopContent>
-                <DesktopMain>
-                    <div className='boxImg'>
-                        <img src='https://via.placeholder.com/600/363789' alt='detail' />
-                    </div>
-                    <div className='content'>
-                        <Title>
-                            ui quasi nihil aut voluptatum sit dolore minima
-                        </Title>
-                        <Subtitle>
-                            Owned by: <Link to='/'>Abi Fauzan</Link>
-                        </Subtitle>
-                        <Subtitle>
-                            Album: <Link to='/'>Album Name</Link>
-                        </Subtitle>
-                        <DesktopCommentArea>
-                            <textarea
-                                name='comment'
-                                placeholder='Add a Comment..'
-                            ></textarea>
-                            <button type='button'>
-                                Add comment
-                            </button>
-                        </DesktopCommentArea>
-                    </div>
-                </DesktopMain>
-            </DesktopContent>
 
             <DesktopCommentList>
                 <p>3 Comments</p>
             </DesktopCommentList>
 
             <CommentArea>
-                {Array(6).fill().map((_, index) => (
+                {Array(10).fill().map((_, index) => (
                     <CommentSingle key={index}>
                         <div className='avatar' />
                         <div className='content'>
@@ -127,21 +175,37 @@ const DesktopView = () => {
                 ))}
             </CommentArea>
         </MainLayout>
-    )
+    ) : (<Loading />)
 }
 
 function PhotoDetail(props) {
+    const [isFavorite, setIsFavorite] = useState(false)
 
     const { id } = useParams()
 
     const isMobile = useIsMobile()
+
+    const favoritesData = useSelector(selectfavorites)
+    const dispatch = useDispatch()
 
     const { data: dataPhotos } = albumApi.endpoints.getPhotos.useQueryState() // undefined
     const findPhoto = dataPhotos?.find(el => el.id === Number(id)) // undefined
 
     const { data: dataAlbums } = useAlbumToPhoto({ albumId: findPhoto?.albumId })
     const { data: dataUsers } = useUserToAlbum({ userId: dataAlbums?.userId})
-    // console.log(dataUsers)
+
+    useEffect(() => {
+        if (favoritesData.length > 0) {
+            const data = favoritesData.find(el => el.id === Number(id))
+            if (data !== undefined) {
+                setIsFavorite(true)
+            } else {
+                setIsFavorite(false)
+            }
+        } else {
+            setIsFavorite(false)
+        }
+    }, [favoritesData, id])
 
     return (
         <main>
@@ -151,12 +215,16 @@ function PhotoDetail(props) {
                     findPhoto={findPhoto} 
                     dataAlbums={dataAlbums}
                     dataUsers={dataUsers}
+                    isFavorite={isFavorite}
+                    dispatch={dispatch}
                 /> 
                 : 
                 <DesktopView 
                     findPhoto={findPhoto} 
                     dataAlbums={dataAlbums}
                     dataUsers={dataUsers}
+                    isFavorite={isFavorite}
+                    dispatch={dispatch}
                 />}
             {/* <PopupComment /> */}
         </main>
