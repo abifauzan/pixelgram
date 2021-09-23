@@ -13,6 +13,7 @@ import usePhotoToAlbum from '../../hooks/usePhotoToAlbum';
 import useUserToAlbum from '../../hooks/useUserToAlbum';
 import { useHistory } from 'react-router';
 import { checkObjectLength } from '../../helpers/helpers';
+import usePagination from '../../hooks/usePagination';
 
 const AlbumSingle = ({ index, mode, albumData }) => {
 
@@ -73,20 +74,23 @@ const AlbumSingle = ({ index, mode, albumData }) => {
 
 function AlbumCard({ albumData, nopadding = false, mode = 'default' }) {
 
+    const { data, fetch } = usePagination({ dataset: albumData })
     // console.log(albumData)
     // return <Loading /> 
 
     return albumData === undefined ? <Loading /> : (
-        <Main nopadding={false}>
-            {albumData !== undefined && albumData.length > 0 && albumData.map((el, index) => (
-                <AlbumSingle 
-                    key={index}
-                    albumData={el}
-                    mode={mode}
-                />
-            ))}
-            
-        </Main>
+        <>
+            <Main nopadding={false}>
+                {albumData !== undefined && albumData.length > 0 && data.map((el, index) => (
+                    <AlbumSingle 
+                        key={index}
+                        albumData={el}
+                        mode={mode}
+                    />
+                ))}
+            </Main>
+            {fetch && <Loading />}
+        </>
     );
 }
 
