@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 function usePagination({ dataset }) {
     const [data, setData] = useState([])
     const [page, setPage] = useState(1)
-    const [start, setStart] = useState(0)
-    const [end, setEnd] = useState(0)
     const [totalResult, setTotalResult] = useState(0)
     const [fetch, setFetch] = useState(false)
 
@@ -14,10 +12,10 @@ function usePagination({ dataset }) {
         if (dataset.length > limit) {
             setData([...dataset.slice(0, limit)])
             setTotalResult(dataset.length)
-            // setStart(0)
-            // setEnd(limit)
+        } else {
+            setData(dataset)
         }
-    }, [])
+    }, [dataset])
 
     useEffect(() => {
         let fetchTimeout = null
@@ -39,18 +37,12 @@ function usePagination({ dataset }) {
 
         window.addEventListener('scroll', handleScroll, { passive: true })
 
-        // console.log(fetch)
-        // console.log(page)
-        console.log(data)
-
         return () => {
             window.removeEventListener('scroll', handleScroll)
             clearTimeout(fetchTimeout)
         }
     }, [page, data, fetch, totalResult, dataset])
 
-    
-    
     return {
         data,
         fetch,

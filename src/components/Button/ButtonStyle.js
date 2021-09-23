@@ -11,7 +11,7 @@ export const ButtonStyled = styled.div`
     align-self: flex-start;
     padding: 8px 10px;
     /* width: auto; */
-    background: ${(props) => props.filled ? Color.secondary : Color.white};
+    background: ${(props) => props.filled ? Color.secondary : props.disabled ? Color.grey : Color.white};
     ${Font({
         isPixel: true,
         size: TextSize.body.lg,

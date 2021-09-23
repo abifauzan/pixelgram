@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Font, TextSize, TextWeight } from "../../styles/Mixin";
 import Color from '../../styles/Color';
+import Media from "../../styles/Media";
 
 export const ProfileContainer = styled.main`
     width: 100%;
@@ -19,11 +20,21 @@ export const Profile = styled.section`
     gap: 16px;
     padding: 0 16px 16px;
 
+    ${Media.tab`
+        gap: 32px;
+        padding: 0 32px 32px;
+    `};
+
     div.avatar {
         width: 40px;
         height: 40px;
         flex-shrink: 0;
         border-radius: 999px;
+
+        ${Media.tab`
+            width: 90px;
+            height: 90px;
+        `};
 
         img {
             width: 100%;
@@ -37,20 +48,48 @@ export const Profile = styled.section`
         gap: 8px;
         margin-right: auto;
 
+        ${Media.tab`
+            gap: 12px;
+        `};
+
         span.welcome {
             ${Font({
                 size: TextSize.body.nm,
                 color: Color.grey,
                 weight: TextWeight.reguler,
-            })}
+            })};
         }
 
-        span.email {
+        span.name {
             ${Font({
                 size: TextSize.body.sm,
                 color: Color.dark,
                 weight: TextWeight.medium,
             })}
+
+            ${Media.tab`
+                ${Font({
+                    size: TextSize.heading.lg,
+                    color: Color.dark,
+                    weight: TextWeight.reguler,
+                })}
+            `};
+        }
+
+        span.email {
+            ${Font({
+                size: TextSize.body.sm,
+                color: Color.darkLight,
+                weight: TextWeight.reguler,
+            })}
+
+            ${Media.tab`
+                ${Font({
+                    size: TextSize.heading.sm,
+                    color: Color.darkLight,
+                    weight: TextWeight.reguler,
+                })}
+            `};
         }
     }
 
@@ -58,6 +97,15 @@ export const Profile = styled.section`
         svg {
             width: 25px;
             height: 25px;
+
+            &:hover {
+                color: ${Color.danger};
+            }
+
+            ${Media.tab`
+                width: 50px;
+                height: 50px;
+            `};
         }
     }
 `
@@ -69,6 +117,12 @@ export const TabHeader = styled.nav`
     align-items: center;
     border-top: 1px solid ${Color.grey};
     margin: 20px 0;
+
+    ${Media.tab`
+        width: calc(100% - 60px);
+        justify-content: center;
+        gap: 48px;
+    `};
 `
 
 export const TabItem = styled.div`
@@ -77,6 +131,22 @@ export const TabItem = styled.div`
     align-items: center;
     gap: 5px;
     padding: 10px 0;
+    cursor: pointer;
+    transition: all .2s ease-in;
+
+    &:hover {
+        border-top: 1px solid ${Color.dark};
+    }
+
+    &:hover span,
+    &:hover svg {
+        color: ${Color.dark};
+    }
+
+    ${Media.tab`
+        gap: 10px;
+        padding: 20px 0;
+    `};
 
     span {
         ${Font({
@@ -84,14 +154,29 @@ export const TabItem = styled.div`
             color: ({ active }) => active ? Color.dark : Color.grey,
             weight: TextWeight.reguler,
         })}
+        transition: all .2s ease-in;
         text-transform: uppercase;
+
+        ${Media.tab`
+            ${Font({
+                size: TextSize.body.nm,
+                color: ({ active }) => active ? Color.dark : Color.grey,
+                weight: TextWeight.reguler,
+            })}
+        `};
 
     }
 
     svg {
         width: 18px;
         height: 18px;
-        color: ${({ active }) => active ? Color.dark : Color.grey}
+        color: ${({ active }) => active ? Color.dark : Color.grey};
+        transition: all .2s ease-in;
+
+        ${Media.tab`
+            width: 28px;
+            height: 28px;
+        `};
     }
 `
 
@@ -107,6 +192,10 @@ export const ProfileDataContainer = styled.div`
     flex-direction: column;
     gap: 16px;
     padding: 0 16px;
+
+    ${Media.tab`
+        padding: 0 48px;
+    `};
 `
 
 export const ProfileData = styled.div`
@@ -115,6 +204,10 @@ export const ProfileData = styled.div`
     flex-direction: column;
     gap: 8px;
 
+    ${Media.tab`
+        gap: 12px;
+    `};
+
     span.title {
         ${Font({
             size: TextSize.body.sm,
@@ -122,6 +215,14 @@ export const ProfileData = styled.div`
             weight: TextWeight.medium,
         })}
         text-transform: capitalize;
+
+        ${Media.tab`
+            ${Font({
+                size: TextSize.body.lg,
+                color: Color.dark,
+                weight: TextWeight.medium,
+            })}
+        `};
     }
 
     span.content {
@@ -130,6 +231,13 @@ export const ProfileData = styled.div`
             color: Color.darkLight,
             weight: TextWeight.reguler,
         })}
-        /* text-transform: capitalize; */
+
+        ${Media.tab`
+            ${Font({
+                size: TextSize.body.nm,
+                color: Color.darkLight,
+                weight: TextWeight.reguler,
+            })}
+        `};
     }
 `

@@ -10,6 +10,8 @@ import {
     AvatarGrid,
     AvatarItem,
     SearchQueryBox,
+    BgLeft,
+    BgRight,
 } from './Component'
 import AlbumCard from '../../components/AlbumCard/AlbumCard';
 import {
@@ -24,6 +26,21 @@ import { useHistory } from 'react-router';
 import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import PopupFilter from '../../components/PopupFilter/PopupFilter';
 import { selectData } from '../../redux/dataFilteredSlice';
+import impostor1 from '../../assets/image/avatar/impostor_1.png';
+import impostor2 from '../../assets/image/avatar/impostor_2.png';
+import impostor3 from '../../assets/image/avatar/impostor_3.png';
+import impostor4 from '../../assets/image/avatar/impostor_4.png';
+import impostor5 from '../../assets/image/avatar/impostor_5.png';
+import impostor6 from '../../assets/image/avatar/impostor_6.png';
+import impostor7 from '../../assets/image/avatar/impostor_7.png';
+import impostor8 from '../../assets/image/avatar/impostor_8.png';
+import impostor9 from '../../assets/image/avatar/impostor_9.png';
+import impostor10 from '../../assets/image/avatar/impostor_10.png';
+import bgCloudImg from '../../assets/image/bg_cloud.png';
+
+const impostorsImg = [
+    impostor1, impostor2, impostor3, impostor4, impostor5, impostor6, impostor7, impostor8, impostor9, impostor10
+]
 
 const Hero = ({ profileData }) => {
 
@@ -77,10 +94,17 @@ const SplashPage = ({ dataUsers }) => {
                             onClick={() => {
                                 dispatch(loginUser(el))
                             }}
-                        ><img src='https://via.placeholder.com/150/92c952' alt={`avatar-${el.name}`} /></AvatarItem>
+                        >
+                            <img src={impostorsImg[index]} alt={`avatar-${el.name}`} />
+                            <div className='user'>
+                                <span>{el.name}</span>
+                            </div>
+                        </AvatarItem>
                     ))}
                 </AvatarGrid>
             )}
+            <BgLeft src={bgCloudImg} alt='background cloud left' />
+            <BgRight src={bgCloudImg} alt='background cloud right' />
         </SplashContainer>
     )
 }
@@ -105,9 +129,11 @@ const LoggedInComp = ({ profileData, dataAlbums }) => {
                 <SearchQueryBox>
                     <span className='title'>Search by: {' '}
                         <strong>{filteredDataSelector.searchType === 'album' ? 'Album Name' : 'User Name'}</strong> {' '}
-                        found ({filteredDataSelector.filteredData.length})
                     </span>
                     <span className='content'>"{filteredDataSelector.searchInput}"</span>
+                    <span className='title'>
+                        Found ({filteredDataSelector.filteredData.length})
+                    </span>
                 </SearchQueryBox>
             )}
             

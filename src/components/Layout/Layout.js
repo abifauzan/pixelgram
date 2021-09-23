@@ -41,6 +41,14 @@ export const HeaderGoBack = styled.div`
             size: TextSize.heading.xs,
             weight: TextWeight.medium
         })} 
+
+        ${Media.tab`
+            ${Font({
+                color: Color.darkLight,
+                size: TextSize.heading.sm,
+                weight: TextWeight.medium
+            })} 
+        `}
     }
 
     div.btnBack {
@@ -66,6 +74,12 @@ const MainHeader = styled.div`
     background-position: center top;
     display: flex;
     align-items: flex-start;
+    justify-content: center;
+
+    ${Media.tab`
+        height: 400px;
+        background-position: center;
+    `}
 `
 
 const MainNavbar = styled.nav`
@@ -76,6 +90,9 @@ const MainNavbar = styled.nav`
     justify-content: space-between;
     align-items: center;
 
+    ${Media.tab`
+        padding: 40px 16px;
+    `}
 `
 
 const LogoStyled = styled(Link)`
@@ -118,6 +135,8 @@ const MainContent = styled(Container)`
 
     ${Media.tab`
         max-width: ${sizes.laptop}px;
+        margin-top: -150px;
+        padding: ${({ nopadding }) => nopadding ? '50px 0' : '50px 32px'};
     `}
 `
 

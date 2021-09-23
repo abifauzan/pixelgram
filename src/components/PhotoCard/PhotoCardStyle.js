@@ -14,6 +14,14 @@ export const Main = styled.div`
     `}
 `
 
+export const Image = styled.img`
+    width: 100%;
+    position: relative; 
+    border: 4px solid #000;
+    box-shadow: 6px -6px 0px 0px rgba(0,0,0,1);
+    transition: all .2s ease-in;
+`
+
 export const Item = styled.figure`
     /* width: 300px; */
     width: 100%;
@@ -21,6 +29,15 @@ export const Item = styled.figure`
     flex-direction: column;
     position: relative;
     gap: 12px;
+    cursor: pointer;
+
+    &:hover ${Image} {
+        box-shadow: 0px 0px 0px 0px rgba(0,0,0,1);
+    }
+
+    ${Media.tab`
+        gap: 18px;
+    `}
 `
 
 export const ItemName = styled.figcaption`
@@ -31,9 +48,3 @@ export const ItemName = styled.figcaption`
     text-transform: capitalize;
 `
 
-export const Image = styled.img`
-    width: 100%;
-    position: relative; 
-    border: 4px solid #000;
-    box-shadow: 6px -6px 0px 0px rgba(0,0,0,1);
-`

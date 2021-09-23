@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Font, TextSize, TextWeight } from "../../styles/Mixin";
 import Color from '../../styles/Color';
+import Media from "../../styles/Media";
 
 export const Title = styled.h2`
     ${Font({
@@ -12,6 +13,14 @@ export const Title = styled.h2`
     padding: 40px 20px 40px;
     margin: 0;
     text-align: center;
+
+    ${Media.tab`
+        ${Font({
+            size: TextSize.heading.xxl,
+            weight: TextWeight.medium,
+            lineHeight: '2.4rem',
+        })}
+    `}
 `
 export const Subtitle = styled.p`
     ${Font({
@@ -22,6 +31,14 @@ export const Subtitle = styled.p`
     margin: 0;
     text-align: center;
     padding: 0 0 60px;
+
+    ${Media.tab`
+        ${Font({
+            color: Color.darkLight,
+            size: TextSize.heading.sm,
+            weight: TextWeight.reguler,
+        })}
+    `}
 
     a {
         font-weight: ${TextWeight.medium};

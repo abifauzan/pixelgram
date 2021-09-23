@@ -17,11 +17,11 @@ export const Main = styled.div`
 `
 
 export const Item = styled.article`
-    /* width: 300px; */
     display: flex;
     flex-direction: column;
     position: relative;
     gap: 12px;
+    cursor: pointer;
 `
 
 export const ItemName = styled.span`
@@ -41,12 +41,18 @@ export const StackImg = styled.figure`
         height: 250px;
     `}
 
+    &:hover img:nth-child(3),
+    &:hover img:nth-child(2) {
+        left: 0;
+    }
+
     img {
         position: absolute;
         border-radius: 4px;
         width: 100%;
         object-fit: cover;
         object-position: center;
+        transition: all .2s ease-in;
 
         &:nth-child(1) {
             width: 90%;
@@ -66,6 +72,7 @@ export const StackImg = styled.figure`
             z-index: 2;
             bottom: 8px;
             left: 8px;
+            /* transition-delay: 0.4s; */
 
             ${Media.tab`
                 width: 86%;
@@ -78,6 +85,7 @@ export const StackImg = styled.figure`
             z-index: 1;
             bottom: 16px;
             left: 32px;
+            /* transition-delay: 0.2s; */
         }
     }
 `

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Font, TextSize, TextWeight } from '../../styles/Mixin';
 import Color from '../../styles/Color';
+import Media from "../../styles/Media";
 
 export const MobileContainer = styled.main`
     width: 100vw;
@@ -99,13 +100,14 @@ export const ButtonClose = styled(ButtonAction)`
 
 export const Title = styled.h2`
     ${Font({
-        size: TextSize.heading.xl,
-        weight: TextWeight.medium,
+        size: TextSize.heading.lg,
+        weight: TextWeight.reguler,
         lineHeight: '2.2rem',
     })}
     text-transform: capitalize;
     margin: 0;
     text-align: left;
+    padding-bottom: 16px;
 `
 export const Subtitle = styled.p`
     ${Font({
@@ -142,8 +144,8 @@ export const DesktopContent = styled.div`
     display: flex;
     flex-direction: column;
     gap: 32px;
-    padding: 32px 0 0;
-    overflow: hidden;
+    padding: 64px 0 0;
+    /* overflow: hidden; */
 `
 
 export const DesktopMain = styled.div`
@@ -152,7 +154,7 @@ export const DesktopMain = styled.div`
     gap: 32px;
 
     div.boxImg {
-        flex: 6;
+        flex: 1;
         border: 4px solid #000;
         box-shadow: 6px -6px 0px 0px rgba(0,0,0,1);
 
@@ -164,10 +166,24 @@ export const DesktopMain = styled.div`
     }
 
     div.content {
-        flex: 4;
+        flex: 1;
         display: flex;
         flex-direction: column;
         gap: 16px;
+        
+        div.flexContent {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+
+            h2 {
+                flex: 4;
+            }
+
+            div {
+                /* flex: 1; */
+            }
+        }
     }
 `
 
@@ -176,52 +192,55 @@ export const DesktopCommentArea = styled.div`
     display: flex;
     flex-direction: column;
     gap: 16px;
+    margin-top: 16px;
 
-    textarea {
+    div {
         margin-top: 16px;
-        /* width: 100%; */
-        height: 100px;
-        padding: 16px;
-        background: #eaeaea;
-        text-align: left;
-        border-radius: 15px;
-
-        ${Font({
-            size: TextSize.body.sm,
-            color: Color.dark,
-        })}
-
-        &::placeholder {
-            color: ${Color.grey};
-        }
-    }
-
-    button {
-        width:180px;
-        padding: 16px;
-        background: ${Color.primary};
-        border-radius: 10px;
-        ${Font({
-            size: TextSize.body.lg,
-            color: Color.white,
-        })}
-        align-self: flex-start;
     }
 `
 
-export const DesktopCommentList = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
+export const DesktopTextArea = styled.textarea`
+    margin-top: 16px;
+    height: 100px;
+    padding: 16px;
+    background: #eaeaea;
+    text-align: left;
+    border-radius: 5px;
+    border: 2px solid ${(props) => props.error ? Color.danger : 'transparent'};
 
-    p {
-        margin: 0;
-        text-transform: uppercase;
-        ${Font({
-            size: TextSize.body.lg,
+    &:focus {
+        border: 2px solid #000;
+    }
 
-        })}
+    ${Font({
+        size: TextSize.body.sm,
+        color: Color.dark,
+    })}
+
+    &::placeholder {
+        color: ${Color.grey};
+    }
+`
+
+export const DesktopCommentList = styled.p`
+    margin: 0;
+    text-transform: uppercase;
+    padding: 36px 16px 16px;
+    margin-bottom: 36px;
+    position: relative;
+    ${Font({
+        size: TextSize.body.lg,
+        weight: TextWeight.medium,
+    })};
+
+    &::after {
+        content: '';
+        width: 40px;
+        height: 4px;
+        background: ${Color.primary};
+        position: absolute;
+        bottom: 0;
+        left: 16px;
     }
 `
 
@@ -229,20 +248,24 @@ export const CommentArea = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
+    padding: 0 16px;
 `
 
 export const CommentSingle = styled.div`
     width: 100%;
     display: flex;
-    gap: 10px;
+    gap: 20px;
     align-items: flex-start;
     justify-content: flex-start;
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
-    div.avatar {
+    img.avatar {
         flex-shrink: 0;
-        width: 35px;
-        height: 35px;
+        width: 50px;
+        height: 50px;
         background: lightblue;
         border-radius: 999px;
     }
@@ -250,11 +273,12 @@ export const CommentSingle = styled.div`
     div.content {
         display: flex;
         flex-direction: column;
-        gap: 5px;
+        gap: 10px;
+        padding-right: 20px;
 
         span.username {
             ${Font({
-                size: TextSize.body.sm,
+                size: TextSize.body.lg,
                 weight: TextWeight.medium,
             })}
             text-transform: capitalize;
@@ -262,8 +286,9 @@ export const CommentSingle = styled.div`
 
         span.comment {
             ${Font({
-                size: TextSize.body.sm,
+                size: TextSize.body.nm,
                 weight: TextWeight.reguler,
+                color: Color.darkLight,
                 lineHeight: '1.2rem',
             })}
         }

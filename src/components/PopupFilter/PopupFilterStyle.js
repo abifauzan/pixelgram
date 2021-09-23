@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Color from '../../styles/Color';
+import Media, { sizes } from "../../styles/Media";
 import { TextSize, Font, TextWeight } from "../../styles/Mixin";
 import { ButtonStyled } from '../Button/ButtonStyle';
 
@@ -34,11 +35,19 @@ export const PopupContent = styled.div`
     flex-direction: column;
     padding: 0 16px 30px;
 
+    ${Media.tab`
+        width: ${sizes.tab}px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0 60px 30px;
+        border: 1px solid ${Color.grey};
+    `}
+
     div.border {
         width: 70px;
         height: 4px;
         background: ${Color.primary};
-        border-radius: 5px;
+        border-radius: 2px;
         margin: 30px 0;
         align-self: center;
     }
@@ -50,6 +59,15 @@ export const PopupContent = styled.div`
             color: Color.darkLight,
         })}
         margin: 0 0 20px;
+
+        ${Media.tab`
+            ${Font({
+                size: TextSize.body.lg,
+                weight: TextWeight.medium,
+                color: Color.darkLight,
+            })}
+            margin: 0 0 20px;
+        `}
     }
     span.copyRed {
         ${Font({
@@ -60,6 +78,15 @@ export const PopupContent = styled.div`
         cursor: pointer;
         margin: 0 0 20px;
         border-bottom: 1px solid ${Color.danger};
+
+        ${Media.tab`
+            ${Font({
+                size: TextSize.body.lg,
+                weight: TextWeight.medium,
+                color: Color.danger,
+            })}
+            margin: 0 0 20px;
+        `}
     }
 
     div.options {
@@ -77,11 +104,23 @@ export const OptionItem = styled.span`
     background: ${({ active }) => active ? '#000' : '#FFF'};
     text-transform: uppercase;
     padding: 15px 0;
+    cursor: pointer;
+    
     ${Font({
-        size: TextSize.body.nm,
+        isPixel: true,
+        size: TextSize.heading.sm,
         weight: TextWeight.medium,
         color: ({ active }) => active ? '#FFF' : '#000',
     })};
+
+    ${Media.tab`
+        ${Font({
+            isPixel: true,
+            size: TextSize.heading.nm,
+            weight: TextWeight.medium,
+            color: ({ active }) => active ? '#FFF' : '#000',
+        })};
+    `}
 `
 
 export const InputSearch = styled.input`

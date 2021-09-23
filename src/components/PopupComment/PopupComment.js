@@ -14,11 +14,15 @@ import {
 function PopupComment({ setShowPopup, findPhoto, dataAlbums, dataUsers }) {
     const [query, setQuery] = useState('')
     const [error, setError] = useState(false)
+    const [comments, setComments] = useState([])
 
     const dataComments = useSelector(selectComments)
     const dataProfile = useSelector(selectProfile)
-    const filteredComments = dataComments.filter(el => el.photoId === Number(findPhoto.id))
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        setComments(dataComments.filter(el => el.photoId === Number(findPhoto.id)))
+    }, [dataComments, findPhoto.id])
 
     const handleComment = () => {
         if (query !== '') {
@@ -38,13 +42,13 @@ function PopupComment({ setShowPopup, findPhoto, dataAlbums, dataUsers }) {
     return (
         <PopupContainer>
             <PopupTop>
-                <span>3 Comments</span>
+                <span>{comments.length} Comments</span>
                 <button onClick={() => setShowPopup(false)}>
                     <GrFormClose />
                 </button>
             </PopupTop>
             <CommentArea>
-            {dataComments.length > 0 ? dataComments.map((el, index) => (
+            {comments.length > 0 ? comments.map((el, index) => (
                 <CommentSingle key={el.id}>
                     <img src='https://i.pravatar.cc/300' className='avatar' alt='avatar' />
                     <div className='content'>

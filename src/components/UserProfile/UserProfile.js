@@ -35,8 +35,8 @@ function UserProfile(props) {
     const history = useHistory()
 
     const [page, setPage] = useState('favorites')
-
-    // console.log(albumsData.id)
+    
+    // console.log('profileData', profileData)
 
     const handleLogout = () => {
         dispatch(logoutUser())
@@ -91,7 +91,7 @@ function UserProfile(props) {
                 </TabHeader>
                 {mode === 'profile' ? (
                     <TabContent active={page==='favorites'}>
-                        {checkObjectLength(favoritesData) ? (
+                        {favoritesData.length > 0 ? (
                             <PhotoCard photosData={favoritesData} /> 
                         ): (<Alert>No data found</Alert>)}
                     </TabContent>
@@ -110,34 +110,40 @@ function UserProfile(props) {
                         mode='profile' 
                     />
                 </TabContent>
-                <TabContent active={page==='profile'}>
-                    <ProfileDataContainer>
-                        <ProfileData>
-                            <span className='title'>Username</span>
-                            <span className='content'>Bret</span>
-                        </ProfileData>
-                        <ProfileData>
-                            <span className='title'>email</span>
-                            <span className='content'>Sincere@april.biz</span>
-                        </ProfileData>
-                        <ProfileData>
-                            <span className='title'>address</span>
-                            <span className='content'>Kulas Light Apt. 556, Gwenborough 92998-3874</span>
-                        </ProfileData>
-                        <ProfileData>
-                            <span className='title'>phone</span>
-                            <span className='content'>1-770-736-8031 x56442</span>
-                        </ProfileData>
-                        <ProfileData>
-                            <span className='title'>company</span>
-                            <span className='content'>Romaguera-Crona</span>
-                        </ProfileData>
-                        <ProfileData>
-                            <span className='title'>website</span>
-                            <span className='content'>hildegard.org</span>
-                        </ProfileData>
-                    </ProfileDataContainer>
-                </TabContent>
+                {mode === 'profile' && (
+                    <TabContent active={page==='profile'}>
+                        {profileData !== undefined ? (
+                            <ProfileDataContainer>
+                                <ProfileData>
+                                    <span className='title'>Username</span>
+                                    <span className='content'>{profileData.username}</span>
+                                </ProfileData>
+                                <ProfileData>
+                                    <span className='title'>email</span>
+                                    <span className='content'>{profileData.email}</span>
+                                </ProfileData>
+                                <ProfileData>
+                                    <span className='title'>address</span>
+                                    <span className='content'>{`${profileData.address.street} ${profileData.address.suite} ${profileData.address.city}, ${profileData.address.zipcode}`}</span>
+                                </ProfileData>
+                                <ProfileData>
+                                    <span className='title'>phone</span>
+                                    <span className='content'>{profileData.phone}</span>
+                                </ProfileData>
+                                <ProfileData>
+                                    <span className='title'>company</span>
+                                    <span className='content'>{profileData.company.name}</span>
+                                </ProfileData>
+                                <ProfileData>
+                                    <span className='title'>website</span>
+                                    <span className='content'>{profileData.website}</span>
+                                </ProfileData>
+                            </ProfileDataContainer>
+                        ) : (<Loading />)}
+                        
+                    </TabContent>
+                )}
+                
             </ProfileContainer>
         </MainLayout>
     );

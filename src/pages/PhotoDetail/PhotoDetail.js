@@ -8,7 +8,7 @@ import { IoChevronBack } from 'react-icons/io5';
 import PopupComment from '../../components/PopupComment/PopupComment';
 import MainLayout, { Flex, HeaderGoBack } from '../../components/Layout/Layout';
 import styled from 'styled-components';
-import { Subtitle, Title, DesktopMain, DesktopCommentList, CommentArea, CommentSingle } from './PhotoDetailStyle';
+import { Subtitle, Title, DesktopMain, DesktopCommentList, CommentArea, CommentSingle, DesktopTextArea } from './PhotoDetailStyle';
 import { Link } from 'react-router-dom';
 import { useParams, useHistory } from 'react-router';
 import {
@@ -26,6 +26,13 @@ import {
     removeOne,
 } from '../../redux/favoriteSlice';
 import { useSelector, useDispatch } from 'react-redux';
+import { 
+    addOne as addOneComment,
+    selectComments,
+} from '../../redux/commentsSlice';
+import { 
+    selectProfile,
+} from '../../redux/profileSlice';
 
 const ButtonBack = styled(ButtonStyled)`
     padding: 2px;
@@ -105,6 +112,33 @@ const MobileView = ({ findPhoto, dataAlbums, dataUsers, isFavorite, dispatch }) 
 }
 
 const DesktopView = ({ findPhoto, dataAlbums, dataUsers, isFavorite, dispatch }) => {
+    const [query, setQuery] = useState('')
+    const [error, setError] = useState(false)
+    const [comments, setComments] = useState([])
+
+    const dataComments = useSelector(selectComments)
+    const dataProfile = useSelector(selectProfile)
+
+    useEffect(() => {
+        if (findPhoto !== undefined) {
+            setComments(dataComments.filter(el => el.photoId === Number(findPhoto.id)))
+        }
+    }, [dataComments, findPhoto])
+
+    const handleComment = () => {
+        if (query !== '') {
+            dispatch(addOneComment({
+                userId: dataProfile.id,
+                userName: dataProfile.name,
+                photoId: findPhoto.id,
+                message: query
+            }))
+            setError(false)
+            setQuery('')
+        } else {
+            setError(true)
+        }
+    }
 
     return findPhoto !== undefined ? (
         <MainLayout>
@@ -125,9 +159,25 @@ const DesktopView = ({ findPhoto, dataAlbums, dataUsers, isFavorite, dispatch })
                             <img src={findPhoto.url} alt={findPhoto.title} />
                         </div>
                         <div className='content'>
-                            <Title>
-                                {findPhoto.title}
-                            </Title>
+                            <div className='flexContent'>
+                                <Title>
+                                    {findPhoto.title}
+                                </Title>
+                                <Button 
+                                    svg
+                                    filled={isFavorite}
+                                    onclick={() => {
+                                        handleFavorite({
+                                            dataPhoto: findPhoto,
+                                            dataUsers: dataUsers,
+                                            status: isFavorite,
+                                            dispatch: dispatch,
+                                        })
+                                    }}
+                                >
+                                    <AiFillHeart />
+                                </Button>
+                            </div>
                             <Subtitle>
                                 Owned by: <Link to={`/user/${dataUsers.name}`}>{dataUsers.name}</Link>
                             </Subtitle>
@@ -135,30 +185,22 @@ const DesktopView = ({ findPhoto, dataAlbums, dataUsers, isFavorite, dispatch })
                                 Album: <Link to={`/album/${dataAlbums.id}`}>{dataAlbums.title}</Link>
                             </Subtitle>
                             <DesktopCommentArea>
-                                <textarea
+                                <DesktopTextArea
                                     name='comment'
                                     placeholder='Add a Comment..'
-                                ></textarea>
-                                <Flex gap20>
-                                    <Button>
-                                        Add comment
-                                    </Button>
-                                    <Button 
-                                        svg
-                                        filled={isFavorite}
-                                        onclick={() => {
-                                            handleFavorite({
-                                                dataPhoto: findPhoto,
-                                                dataUsers: dataUsers,
-                                                status: isFavorite,
-                                                dispatch: dispatch,
-                                            })
-                                        }}
-                                    >
-                                        <AiFillHeart />
-                                    </Button>
-                                </Flex>
-                                
+                                    error={error}
+                                    value={query}
+                                    onChange={(e) => {
+                                        setQuery(e.target.value)
+                                        setError(false)
+                                    }}
+                                ></DesktopTextArea>
+                                <Button 
+                                    onclick={handleComment}
+                                    disabled={error}
+                                >
+                                    Add comment
+                                </Button>
                             </DesktopCommentArea>
                         </div>
                     </DesktopMain>
@@ -167,19 +209,17 @@ const DesktopView = ({ findPhoto, dataAlbums, dataUsers, isFavorite, dispatch })
             
 
             <DesktopCommentList>
-                <p>3 Comments</p>
+                {comments.length > 0 ? `${comments.length} Comments` : 'No comments found'}
             </DesktopCommentList>
 
             <CommentArea>
-                {Array(10).fill().map((_, index) => (
-                    <CommentSingle key={index}>
-                        <div className='avatar' />
+                {comments.length > 0 && comments.map((el, index) => (
+                    <CommentSingle key={el.id}>
+                        <img src='https://i.pravatar.cc/300' alt='avatar user' className='avatar' />
                         <div className='content'>
-                            <span className='username'>Abi Fauzan</span>
+                            <span className='username'>{el.userName}</span>
                             <span className='comment'>
-                                This is very short comment from the user
-                                This is very short comment from the user
-                                This is very short comment from the user
+                                {el.message}
                             </span>
                         </div>
                     </CommentSingle>
