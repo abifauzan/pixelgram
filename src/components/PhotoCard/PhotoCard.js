@@ -7,7 +7,7 @@ import useIntersection from '../../hooks/useIntersection';
 import { cardVariants1 } from '../../styles/Transition';
 import PhotoSingle from './PhotoSingle';
 
-function PhotoCard({ photosData }) {
+function PhotoCard({ photosData, mode = 'default' }) {
 
     const history = useHistory()
 
@@ -22,6 +22,7 @@ function PhotoCard({ photosData }) {
                     <PhotoSingle 
                         key={`${index}-${el.id}`}
                         data={el}
+                        mode={mode}
                     />
                 ))}
             </Main>

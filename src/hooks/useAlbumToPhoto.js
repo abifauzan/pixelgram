@@ -7,7 +7,7 @@ function useAlbumToPhoto({ albumId }) {
     const [data, setData] = useState({})
 
     const { data: dataAlbums, error, isLoading } = albumApi.endpoints.getAlbums.useQueryState()
-
+    // console.log(albumId)
 
     useEffect(() => {
         if (isLoading === false && dataAlbums !== undefined && dataAlbums.length > 0) {

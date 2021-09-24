@@ -108,7 +108,10 @@ function UserProfile(props) {
                 {mode === 'profile' ? (
                     <TabContent active={page==='favorites'}>
                         {favoritesData.length > 0 ? (
-                            <PhotoCard photosData={favoritesData} /> 
+                            <PhotoCard 
+                                photosData={favoritesData}
+                                mode='profile'
+                            /> 
                         ): (<Alert>No data found</Alert>)}
                     </TabContent>
                 ) : (

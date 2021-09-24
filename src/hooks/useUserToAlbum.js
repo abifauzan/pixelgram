@@ -15,6 +15,7 @@ function useUserToAlbum({userId}) {
                 id: dataFiltered[0].id,
                 name: dataFiltered[0].name,
                 username: dataFiltered[0].username,
+                email: dataFiltered[0].email,
             }
             setData(obj)
         }

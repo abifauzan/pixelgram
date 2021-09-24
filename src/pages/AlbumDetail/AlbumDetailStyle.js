@@ -33,6 +33,22 @@ export const Subtitle = styled.p`
     text-align: center;
     padding: 0 0 60px;
 
+    span {
+        ${Font({
+            color: Color.darkLight,
+            size: TextSize.body.nm,
+            weight: TextWeight.reguler,
+        })}
+
+        ${Media.tab`
+            ${Font({
+                color: Color.darkLight,
+                size: TextSize.heading.xs,
+                weight: TextWeight.reguler,
+            })}
+        `}
+    }
+
     ${Media.tab`
         ${Font({
             color: Color.darkLight,

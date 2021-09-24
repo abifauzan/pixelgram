@@ -184,6 +184,7 @@ export const TabContent = styled.div`
     display: ${({ active }) => active ? 'flex' : 'none'};
     flex-direction: column;
     width: 100%;
+    padding-bottom: 20px;
 `
 
 export const ProfileDataContainer = styled.div`
