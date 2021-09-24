@@ -45,7 +45,12 @@ function AlbumDetail(props) {
     // return <Loading />
 
     return findAlbum !== undefined ? (
-        <MainLayout>
+        <MainLayout
+            initial={{ x: '-100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ duration: 0.5 }}
+        >
             <HeaderGoBack>
                 <div className='btnBack'>
                     <ButtonBack onClick={() => history.goBack()}>

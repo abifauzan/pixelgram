@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Button from '../Button/Button';
 import { ButtonUser, Item, ItemName, Main, StackImg } from './AlbumCardStyle';
 import {
@@ -14,10 +14,15 @@ import useUserToAlbum from '../../hooks/useUserToAlbum';
 import { useHistory } from 'react-router';
 import { checkObjectLength } from '../../helpers/helpers';
 import usePagination from '../../hooks/usePagination';
+import useIntersection from '../../hooks/useIntersection';
+import { cardVariants1 } from '../../styles/Transition';
 
 const AlbumSingle = ({ index, mode, albumData }) => {
 
     const history = useHistory()
+
+    const boxRef = useRef(null)
+    const hitScreen = useIntersection(boxRef)
 
     const { data: photosData } = usePhotoToAlbum({albumId: albumData.id, isThumbnail: true}) // array
     const { data: userData } = useUserToAlbum({ userId: albumData.userId }) // object
@@ -34,7 +39,13 @@ const AlbumSingle = ({ index, mode, albumData }) => {
     // return <Loading />
 
     return photosData.length > 0 && checkObjectLength(userData) ? (
-        <Item>
+        <Item 
+            ref={boxRef}
+            initial='hide'
+            animate={ hitScreen ? 'show' : 'hide'}
+            exit='hide'
+            variants={cardVariants1}
+        >
             <StackImg onClick={goToAlbum}>
                 {photosData.map((el, index) => (
                     <img 

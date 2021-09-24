@@ -116,6 +116,8 @@ const DesktopView = ({ findPhoto, dataAlbums, dataUsers, isFavorite, dispatch })
     const [error, setError] = useState(false)
     const [comments, setComments] = useState([])
 
+    const history = useHistory()
+
     const dataComments = useSelector(selectComments)
     const dataProfile = useSelector(selectProfile)
 
@@ -144,7 +146,7 @@ const DesktopView = ({ findPhoto, dataAlbums, dataUsers, isFavorite, dispatch })
         <MainLayout>
             <HeaderGoBack>
                 <div className='btnBack'>
-                    <ButtonBack>
+                    <ButtonBack onClick={() => history.goBack()}>
                         <IoChevronBack />
                     </ButtonBack>
                 </div>

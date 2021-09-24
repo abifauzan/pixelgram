@@ -3,6 +3,9 @@ import Loading from '../Loading/Loading';
 import { Item, Image, Main, ItemName } from './PhotoCardStyle';
 import { useHistory } from 'react-router';
 import usePagination from '../../hooks/usePagination';
+import useIntersection from '../../hooks/useIntersection';
+import { cardVariants1 } from '../../styles/Transition';
+import PhotoSingle from './PhotoSingle';
 
 function PhotoCard({ photosData }) {
 
@@ -16,13 +19,10 @@ function PhotoCard({ photosData }) {
         <>
             <Main>
                 {data.map((el, index) => (
-                    <Item 
+                    <PhotoSingle 
                         key={`${index}-${el.id}`}
-                        onClick={() => history.push(`/photo/${el.id}`)}
-                    >
-                        <Image src={el.url} alt={el.title} />
-                        <ItemName>{el.title}</ItemName>
-                    </Item>
+                        data={el}
+                    />
                 ))}
             </Main>
             {fetch && <Loading />}

@@ -1,56 +1,21 @@
-export const animateFromLeft = {
-    initial: {
-        opacity: 0,
-        x: '-200px',
+export const cardVariants1 = {
+    hide: {
+      scale: 0,
+      opacity: 0,
     },
-    enter: {
-        opacity: 1,
-        x: 0
-    },
-    exit: {
-        opacity: 0,
-        x: '-200px'
+    show: {
+      scale: 1,
+      opacity: 1,
     }
-}
+};
 
-export const animateFromRight = {
-    initial: {
-        opacity: 0,
-        x: '200px',
+export const cardVariants2 = {
+    hide: {
+      y: '100%',
+      opacity: 0,
     },
-    enter: {
-        opacity: 1,
-        x: 0
-    },
-    exit: {
-        opacity: 0,
-        x: '200px'
+    show: {
+      y: 0,
+      opacity: 1,
     }
-}
-
-export const animateFromBottom = {
-    initial: {
-        opacity: 0,
-        y: '200px',
-    },
-    enter: {
-        opacity: 1,
-        y: 0
-    },
-    exit: {
-        opacity: 0,
-        y: '200px'
-    }
-}
-
-export const animateOpacity = {
-    initial: {
-        opacity: 0
-    },
-    enter: {
-        opacity: 1
-    }, 
-    exit: {
-        opacity: 0
-    }
-}
+};

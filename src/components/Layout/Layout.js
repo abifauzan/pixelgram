@@ -7,8 +7,9 @@ import Button from "../Button/Button";
 import Color from '../../styles/Color';
 import bg_header from '../../assets/image/bg_header.jpg';
 import { useLocation, useHistory } from "react-router";
+import { motion } from 'framer-motion';
 
-export const Flex = styled.main`
+export const Flex = styled(motion.main)`
     width: 100%;
     display: flex;
     flex-direction: ${({ direction }) => direction === 'column' ? 'column' : 'row'};
@@ -19,7 +20,7 @@ export const Flex = styled.main`
     /* overflow: hidden; */
 `
 
-export const Container = styled.section`
+export const Container = styled(motion.section)`
     width: 100%;
     max-width: ${({ fluid }) => fluid ? '100vw' : `${sizes.laptop}px`};
     display: flex;
@@ -146,7 +147,11 @@ const MainLayout = ({ children, nopadding }) => {
     const { pathname } = useLocation()
 
     return (
-        <Main>
+        <Main
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+        >
             <MainHeader>
                 <MainNavbar>
                     <LogoStyled to='/'>
@@ -162,7 +167,12 @@ const MainLayout = ({ children, nopadding }) => {
                 </MainNavbar>
             </MainHeader>
 
-            <MainContent nopadding={nopadding}>
+            <MainContent 
+                nopadding={nopadding}
+                initial={{ x: '-100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+            >
                 {children}
             </MainContent>
         </Main>

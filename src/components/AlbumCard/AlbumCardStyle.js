@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Media from "../../styles/Media";
 import { Font, TextSize, TextWeight } from "../../styles/Mixin";
+import { motion } from "framer-motion";
 
 export const Main = styled.div`
     width: 100%;
@@ -16,7 +17,7 @@ export const Main = styled.div`
     `}
 `
 
-export const Item = styled.article`
+export const Item = styled(motion.article)`
     display: flex;
     flex-direction: column;
     position: relative;

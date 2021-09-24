@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Media from "../../styles/Media";
 import { Font, TextSize, TextWeight } from "../../styles/Mixin";
+import { motion } from "framer-motion";
 
 export const Main = styled.div`
     width: 100%;
@@ -22,7 +23,7 @@ export const Image = styled.img`
     transition: all .2s ease-in;
 `
 
-export const Item = styled.figure`
+export const Item = styled(motion.figure)`
     /* width: 300px; */
     width: 100%;
     display: flex;

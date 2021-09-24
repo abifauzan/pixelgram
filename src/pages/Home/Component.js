@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Media from '../../styles/Media';
 import Color from '../../styles/Color';
 import { Font, TextSize, TextWeight } from '../../styles/Mixin';
+import { motion } from 'framer-motion';
 
 export const LogoStyled = styled(Link)`
     display: flex;
@@ -136,7 +137,7 @@ export const FilterBox = styled.div`
     }
 `
 
-export const SplashContainer = styled.main`
+export const SplashContainer = styled(motion.main)`
     width: 100%;
     min-height: 100vh;
     background: ${Color.white};

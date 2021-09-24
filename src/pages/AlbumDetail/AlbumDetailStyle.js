@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Font, TextSize, TextWeight } from "../../styles/Mixin";
 import Color from '../../styles/Color';
 import Media from "../../styles/Media";
+import { motion } from 'framer-motion';
 
 export const Title = styled.h2`
     ${Font({

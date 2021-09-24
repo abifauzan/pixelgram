@@ -3,8 +3,9 @@ import Color from '../../styles/Color';
 import Media, { sizes } from "../../styles/Media";
 import { TextSize, Font, TextWeight } from "../../styles/Mixin";
 import { ButtonStyled } from '../Button/ButtonStyle';
+import { motion } from 'framer-motion';
 
-export const PopupContainer = styled.div`
+export const PopupContainer = styled(motion.div)`
     position: fixed;
     z-index: 3;
     width: 100vw;
@@ -22,7 +23,7 @@ export const PopupContainer = styled.div`
     }
 `
 
-export const PopupContent = styled.div`
+export const PopupContent = styled(motion.div)`
     width: 100vw;
     height: auto;
     background: ${Color.white};
@@ -33,7 +34,8 @@ export const PopupContent = styled.div`
     border-top-right-radius: 4px;
     display: flex;
     flex-direction: column;
-    padding: 0 16px 30px;
+    padding: 0 16px 50px;
+    border-top: 1px solid ${Color.grey};
 
     ${Media.tab`
         width: ${sizes.tab}px;

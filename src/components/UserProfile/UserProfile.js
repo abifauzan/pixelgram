@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProfileContainer, Profile, TabHeader, TabItem, TabContent, ProfileDataContainer, ProfileData } from './UserProfileStyle';
 import { IoLogOutOutline } from 'react-icons/io5'
 import { MdFavoriteBorder } from 'react-icons/md'
@@ -8,13 +8,16 @@ import MainLayout from '../Layout/Layout';
 import PhotoCard from '../PhotoCard/PhotoCard';
 import AlbumCard from '../AlbumCard/AlbumCard';
 import Alert from '../Alert/Alert';
-import { checkObjectLength } from '../../helpers/helpers';
+import { checkObjectLength, impostorsImg } from '../../helpers/helpers';
 import usePhotoToAlbum from '../../hooks/usePhotoToAlbum';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     selectProfile,
     logoutUser,
 } from '../../redux/profileSlice'
+import {
+    removeData,
+} from '../../redux/dataFilteredSlice'
 import {
     removeAll,
     selectfavorites,
@@ -23,6 +26,7 @@ import { useHistory } from 'react-router';
 import Loading from '../Loading/Loading';
 
 function UserProfile(props) {
+    const [isLogin, setIsLogin] = useState(false)
     const {
         mode = 'default', 
         profileData, 
@@ -36,20 +40,32 @@ function UserProfile(props) {
 
     const [page, setPage] = useState('favorites')
     
-    // console.log('profileData', profileData)
+    // console.log(impostorsImg[profileData?.id])
+    // console.log(profileData)
 
     const handleLogout = () => {
+        setIsLogin(false)
         dispatch(logoutUser())
         dispatch(removeAll())
+        dispatch(removeData())
         history.push('/')
     }
+
+    useEffect(() => {
+        if (profileData?.username !== '') {
+            setIsLogin(true)
+        } 
+        else {
+            setIsLogin(false)
+        }
+    }, [profileData])
 
     return (
         <MainLayout nopadding>
             <ProfileContainer>
                 <Profile>
                     <div className='avatar'>
-                        <img src='https://i.pravatar.cc/300' alt='avatar' />
+                        <img src={impostorsImg[Number(profileData?.id)-1]} alt='avatar' />
                     </div>
                     <div className='user'>
                         {/* <span className='welcome'>Welcome, </span> */}
@@ -112,7 +128,7 @@ function UserProfile(props) {
                 </TabContent>
                 {mode === 'profile' && (
                     <TabContent active={page==='profile'}>
-                        {profileData !== undefined ? (
+                        {profileData !== undefined && isLogin ? (
                             <ProfileDataContainer>
                                 <ProfileData>
                                     <span className='title'>Username</span>
@@ -124,7 +140,7 @@ function UserProfile(props) {
                                 </ProfileData>
                                 <ProfileData>
                                     <span className='title'>address</span>
-                                    <span className='content'>{`${profileData.address.street} ${profileData.address.suite} ${profileData.address.city}, ${profileData.address.zipcode}`}</span>
+                                    <span className='content'>{`${profileData?.address?.street} ${profileData?.address?.suite} ${profileData?.address?.city}, ${profileData?.address?.zipcode}`}</span>
                                 </ProfileData>
                                 <ProfileData>
                                     <span className='title'>phone</span>
@@ -132,7 +148,7 @@ function UserProfile(props) {
                                 </ProfileData>
                                 <ProfileData>
                                     <span className='title'>company</span>
-                                    <span className='content'>{profileData.company.name}</span>
+                                    <span className='content'>{profileData.company?.name}</span>
                                 </ProfileData>
                                 <ProfileData>
                                     <span className='title'>website</span>

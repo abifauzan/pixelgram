@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Flex, Container } from '../../components/Layout/Layout';
 import { Link } from 'react-router-dom';
 import glasses_img from '../../assets/image/glasses.png'
@@ -26,23 +26,12 @@ import { useHistory } from 'react-router';
 import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import PopupFilter from '../../components/PopupFilter/PopupFilter';
 import { selectData } from '../../redux/dataFilteredSlice';
-import impostor1 from '../../assets/image/avatar/impostor_1.png';
-import impostor2 from '../../assets/image/avatar/impostor_2.png';
-import impostor3 from '../../assets/image/avatar/impostor_3.png';
-import impostor4 from '../../assets/image/avatar/impostor_4.png';
-import impostor5 from '../../assets/image/avatar/impostor_5.png';
-import impostor6 from '../../assets/image/avatar/impostor_6.png';
-import impostor7 from '../../assets/image/avatar/impostor_7.png';
-import impostor8 from '../../assets/image/avatar/impostor_8.png';
-import impostor9 from '../../assets/image/avatar/impostor_9.png';
-import impostor10 from '../../assets/image/avatar/impostor_10.png';
+
 import bgCloudImg from '../../assets/image/bg_cloud.png';
+import { AnimatePresence } from 'framer-motion';
+import { impostorsImg } from '../../helpers/helpers'
 
-const impostorsImg = [
-    impostor1, impostor2, impostor3, impostor4, impostor5, impostor6, impostor7, impostor8, impostor9, impostor10
-]
-
-const Hero = ({ profileData }) => {
+const Hero = ({ profileData, setIsLogin }) => {
 
     return (
         <Container fluid center>
@@ -67,49 +56,59 @@ const Hero = ({ profileData }) => {
     )
 }
 
-const SplashPage = ({ dataUsers }) => {
+const SplashPage = ({ dataUsers, isLogin, setIsLogin }) => {
 
     const dispatch = useDispatch()
     const { data, error, isLoading } = dataUsers
 
     // return <Loading />
     return isLoading ? (<Loading />) : (
-        <SplashContainer>
-            <LogoStyled to='/'>
-                <img src={glasses_img} alt='Logo' />
-                <span>PXL.GRAM</span>
-            </LogoStyled>
-            <h2>
-                Hey, <br/>
-                <span>let's get you started</span>
-            </h2>
+        <AnimatePresence exitBeforeEnter>
+            {!isLogin && (
+                <SplashContainer
+                    initial={{ x: '-100%' }}
+                    animate={{ x: 0 }}
+                    exit={{ x: '100%' }}
+                >
+                    <LogoStyled to='/'>
+                        <img src={glasses_img} alt='Logo' />
+                        <span>PXL.GRAM</span>
+                    </LogoStyled>
+                    <h2>
+                        Hey, <br/>
+                        <span>let's get you started</span>
+                    </h2>
 
-            <span className='desc'>Choose your avatar</span>
+                    <span className='desc'>Choose your avatar</span>
 
-            {data === undefined ? (<Loading />) : (
-                <AvatarGrid>
-                    {data.map((el, index) => (
-                        <AvatarItem 
-                            key={index}
-                            onClick={() => {
-                                dispatch(loginUser(el))
-                            }}
-                        >
-                            <img src={impostorsImg[index]} alt={`avatar-${el.name}`} />
-                            <div className='user'>
-                                <span>{el.name}</span>
-                            </div>
-                        </AvatarItem>
-                    ))}
-                </AvatarGrid>
+                    {data === undefined ? (<Loading />) : (
+                        <AvatarGrid>
+                            {data.map((el, index) => (
+                                <AvatarItem 
+                                    key={index}
+                                    onClick={() => {
+                                        dispatch(loginUser(el))
+                                        setIsLogin(true)
+                                    }}
+                                >
+                                    <img src={impostorsImg[index]} alt={`avatar-${el.name}`} />
+                                    <div className='user'>
+                                        <span>{el.name}</span>
+                                    </div>
+                                </AvatarItem>
+                            ))}
+                        </AvatarGrid>
+                    )}
+                    <BgLeft src={bgCloudImg} alt='background cloud left' />
+                    <BgRight src={bgCloudImg} alt='background cloud right' />
+                </SplashContainer>
             )}
-            <BgLeft src={bgCloudImg} alt='background cloud left' />
-            <BgRight src={bgCloudImg} alt='background cloud right' />
-        </SplashContainer>
+        
+        </AnimatePresence>
     )
 }
 
-const LoggedInComp = ({ profileData, dataAlbums }) => {
+const LoggedInComp = ({ profileData, dataAlbums, isLogin, setIsLogin }) => {
     const [hasPopup, setHasPopup] = useState(false)
 
     const filteredDataSelector = useSelector(selectData)
@@ -122,8 +121,10 @@ const LoggedInComp = ({ profileData, dataAlbums }) => {
     const albumData = fetchFilteredData !== false ? fetchFilteredData : fetchAllAlbumData
 
     return (
-        <Flex direction='column'>
-            <Hero profileData={profileData} />
+        <Flex 
+            direction='column'
+        >
+            <Hero profileData={profileData} setIsLogin={setIsLogin} />
 
             {checkObjectLength(filteredDataSelector) && (
                 <SearchQueryBox>
@@ -148,33 +149,42 @@ const LoggedInComp = ({ profileData, dataAlbums }) => {
             </Container>
 
             <FloatingButton setHasPopup={setHasPopup} />
-            {hasPopup && <PopupFilter setHasPopup={setHasPopup} />}
-            
+            {hasPopup && <PopupFilter hasPopup={hasPopup} setHasPopup={setHasPopup} />}
         </Flex>
     )
 }
 
 function Home(props) {
 
+    const [isLogin, setIsLogin] = useState(false)
+
     const dataUsers = albumApi.endpoints.getUsers.useQueryState()
     const dataAlbums = albumApi.endpoints.getAlbums.useQueryState()
     const photos = albumApi.endpoints.getPhotos.useQueryState()
 
-    // console.log(users)
-
     const profileData = useSelector(selectProfile)
 
-    const isLoggedin = checkObjectLength(profileData) ? true : false;
+    useEffect(() => {
+        if (checkObjectLength(profileData)) {
+            setIsLogin(true)
+        } else {
+            setIsLogin(false)
+        }
+    }, [profileData])
 
     // return <Loading />
-    return isLoggedin ? (
+    return isLogin ? (
         <LoggedInComp 
             profileData={profileData}
             dataAlbums={dataAlbums}
+            isLogin={isLogin}
+            setIsLogin={setIsLogin}
         />
     ) : (
         <SplashPage 
             dataUsers={dataUsers}
+            isLogin={isLogin}
+            setIsLogin={setIsLogin}
         />
     );
 }

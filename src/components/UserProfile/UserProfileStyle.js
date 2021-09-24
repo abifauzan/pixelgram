@@ -26,19 +26,19 @@ export const Profile = styled.section`
     `};
 
     div.avatar {
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
         flex-shrink: 0;
-        border-radius: 999px;
 
         ${Media.tab`
-            width: 90px;
-            height: 90px;
+            width: 100px;
+            height: 100px;
         `};
 
         img {
             width: 100%;
-            border-radius: 999px;
+            object-fit: contain;
+            /* border-radius: 999px; */
         }
     }
 

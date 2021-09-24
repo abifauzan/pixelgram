@@ -10,8 +10,9 @@ import {
     albumApi
 } from '../../services/albumApi'
 import { Flex } from '../Layout/Layout';
+import { AnimatePresence } from 'framer-motion';
 
-function PopupFilter({ setHasPopup }) {
+function PopupFilter({ hasPopup, setHasPopup }) {
     const [searchActive, setSearchActive] = useState('album')
     const [searchInput, setSearchInput] = useState('')
     const [error, setError] = useState(false)
@@ -61,42 +62,56 @@ function PopupFilter({ setHasPopup }) {
     }
 
     return (
-        <PopupContainer>
-            <div className='overlay' onClick={() => setHasPopup(false)} />
-
-            <PopupContent>
-                <div className='border' />
-
-                <Flex direction='row' spaceBetween>
-                    <span className='copy'>Filter Albums by:</span>
-                    <span className='copyRed' onClick={handleResetFilter}>Reset Filter</span>
-                </Flex>
-                <div className='options'>
-                    <OptionItem 
-                        active={searchActive === 'album'}
-                        onClick={() => setSearchActive('album')}
-                    >Album Name</OptionItem>
-                    <OptionItem 
-                        active={searchActive === 'name'}
-                        onClick={() => setSearchActive('name')}
-                    >User Name</OptionItem>
-                </div>
-                <InputSearch 
-                    type='text'
-                    name='search'
-                    placeholder='Search album...'
-                    value={searchInput}
-                    autoComplete="off"
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    error={error}
-                />
-                <ButtonSearch
-                    onClick={handleSubmit}
+        <AnimatePresence exitBeforeEnter>
+            {hasPopup && (
+                <PopupContainer
+                    key='modal-filter'
+                    initial={{ opacity: 0 }}
+                    animate={hasPopup ? { opacity: 1} : {opacity: 0}}
+                    exit={{ opacity: 0 }}
                 >
-                    Search
-                </ButtonSearch>
-            </PopupContent>
-        </PopupContainer>
+                    <div className='overlay' onClick={() => setHasPopup(false)} />
+
+                    <PopupContent
+                        key='modal-content'
+                        initial={{ y: '100px' }}
+                        animate={{ y: 0}}
+                        exit={{ y: '100px' }}
+                    >
+                        <div className='border' />
+
+                        <Flex direction='row' spaceBetween>
+                            <span className='copy'>Filter Albums by:</span>
+                            <span className='copyRed' onClick={handleResetFilter}>Reset Filter</span>
+                        </Flex>
+                        <div className='options'>
+                            <OptionItem 
+                                active={searchActive === 'album'}
+                                onClick={() => setSearchActive('album')}
+                            >Album Name</OptionItem>
+                            <OptionItem 
+                                active={searchActive === 'name'}
+                                onClick={() => setSearchActive('name')}
+                            >User Name</OptionItem>
+                        </div>
+                        <InputSearch 
+                            type='text'
+                            name='search'
+                            placeholder='Search album...'
+                            value={searchInput}
+                            autoComplete="off"
+                            onChange={(e) => setSearchInput(e.target.value)}
+                            error={error}
+                        />
+                        <ButtonSearch
+                            onClick={handleSubmit}
+                        >
+                            Search
+                        </ButtonSearch>
+                    </PopupContent>
+                </PopupContainer>
+            )}
+        </AnimatePresence>
     );
 }
 

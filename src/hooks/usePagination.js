@@ -20,7 +20,7 @@ function usePagination({ dataset }) {
     useEffect(() => {
         let fetchTimeout = null
         const handleScroll = () => {
-            if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+            if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 200) {
 
                 if(page <= Math.ceil(totalResult / limit)) {
                     setFetch(true)

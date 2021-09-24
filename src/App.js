@@ -12,6 +12,8 @@ import {
   useGetAlbumsQuery,
   useGetPhotosQuery,
 } from './services/albumApi'
+import { AnimatePresence } from 'framer-motion';
+import { useLocation } from 'react-router';
 
 function App() {
 
@@ -19,17 +21,21 @@ function App() {
   const dataUsers = useGetUsersQuery()
   const dataPhotos = useGetPhotosQuery()
 
+  const location = useLocation()
+
   return (
     <>
       <GlobalStyles />
-      <Switch>
-        <Route path='/' component={Home} exact />
-        <Route path='/album/:id' component={AlbumDetail} exact />
-        <Route path='/photo/:id' component={PhotoDetail} exact />
-        <Route path='/user/:username' component={UserPage} exact />
-        <Route path='/profile' component={Profile} exact />
-        <Route component={NotFound} />
-      </Switch>
+      <AnimatePresence exitBeforeEnter initial={false}>
+        <Switch location={location} key={location.pathname}>
+          <Route path='/' component={Home} exact />
+          <Route path='/album/:id' component={AlbumDetail} exact />
+          <Route path='/photo/:id' component={PhotoDetail} exact />
+          <Route path='/user/:username' component={UserPage} exact />
+          <Route path='/profile' component={Profile} exact />
+          <Route component={NotFound} />
+        </Switch>
+        </AnimatePresence>
     </>
   );
 }
