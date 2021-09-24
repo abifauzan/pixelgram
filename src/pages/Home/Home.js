@@ -22,11 +22,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { albumApi } from '../../services/albumApi'
 import { checkObjectLength } from '../../helpers/helpers';
 import Loading from '../../components/Loading/Loading';
-import { useHistory } from 'react-router';
 import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import PopupFilter from '../../components/PopupFilter/PopupFilter';
 import { selectData } from '../../redux/dataFilteredSlice';
-
 import bgCloudImg from '../../assets/image/bg_cloud.png';
 import { AnimatePresence } from 'framer-motion';
 import { impostorsImg } from '../../helpers/helpers'
@@ -61,7 +59,6 @@ const SplashPage = ({ dataUsers, isLogin, setIsLogin }) => {
     const dispatch = useDispatch()
     const { data, error, isLoading } = dataUsers
 
-    // return <Loading />
     return isLoading ? (<Loading />) : (
         <AnimatePresence exitBeforeEnter>
             {!isLogin && (
@@ -158,10 +155,11 @@ function Home(props) {
 
     const [isLogin, setIsLogin] = useState(false)
 
+    // Fetch API cache
     const dataUsers = albumApi.endpoints.getUsers.useQueryState()
     const dataAlbums = albumApi.endpoints.getAlbums.useQueryState()
-    const photos = albumApi.endpoints.getPhotos.useQueryState()
 
+    // Fetch user state
     const profileData = useSelector(selectProfile)
 
     useEffect(() => {
@@ -172,7 +170,6 @@ function Home(props) {
         }
     }, [profileData])
 
-    // return <Loading />
     return isLogin ? (
         <LoggedInComp 
             profileData={profileData}

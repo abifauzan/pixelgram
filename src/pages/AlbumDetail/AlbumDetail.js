@@ -41,9 +41,6 @@ function AlbumDetail(props) {
 
     const { data: userData } = useUserToAlbum({ userId: findAlbum?.userId }) // object
 
-    // console.log(userData)
-    // return <Loading />
-
     return findAlbum !== undefined ? (
         <MainLayout
             initial={{ x: '-100%' }}
@@ -51,6 +48,7 @@ function AlbumDetail(props) {
             exit={{ x: '100%' }}
             transition={{ duration: 0.5 }}
         >
+            
             <HeaderGoBack>
                 <div className='btnBack'>
                     <ButtonBack onClick={() => history.goBack()}>

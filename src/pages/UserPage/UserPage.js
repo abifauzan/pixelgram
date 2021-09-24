@@ -2,9 +2,8 @@ import React from 'react';
 import UserProfile from '../../components/UserProfile/UserProfile';
 import { useHistory, useParams } from 'react-router';
 import { albumApi } from '../../services/albumApi'
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import useAlbumToUser from '../../hooks/useAlbumToUser';
-import Loading from '../../components/Loading/Loading';
 
 function UserPage(props) {
 
@@ -12,15 +11,16 @@ function UserPage(props) {
     const { username } = useParams()
     const dispatch = useDispatch()
 
+    // Fetch API cache
     const { data: dataUsers} = albumApi.endpoints.getUsers.useQueryState()
     const { data: dataPhotos} = albumApi.endpoints.getPhotos.useQueryState()
+
+    // Get user data
     const profileData = dataUsers?.find(el => el.username === username)
     
+    // Get All Photos related to user
     const { data: albumsData } = useAlbumToUser({ userId: profileData?.id})
     const filteredPhoto = dataPhotos?.filter(({ albumId }) => albumsData.some(({ id }) => albumId === id))
-    
-    // console.log(filteredPhoto)
-    // return <Loading />
 
     return (
         <UserProfile 

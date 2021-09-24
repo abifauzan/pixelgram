@@ -6,7 +6,7 @@ import { AiFillHeart } from 'react-icons/ai'
 import { GrFormClose } from 'react-icons/gr'
 import { IoChevronBack } from 'react-icons/io5';
 import PopupComment from '../../components/PopupComment/PopupComment';
-import MainLayout, { Flex, HeaderGoBack } from '../../components/Layout/Layout';
+import MainLayout, { HeaderGoBack } from '../../components/Layout/Layout';
 import styled from 'styled-components';
 import { Subtitle, Title, DesktopMain, DesktopCommentList, CommentArea, CommentSingle, DesktopTextArea } from './PhotoDetailStyle';
 import { Link } from 'react-router-dom';
@@ -44,9 +44,8 @@ const ButtonBack = styled(ButtonStyled)`
         left: -2px;
     }
 `
-
+// Handle click favorite
 const handleFavorite = ({dataPhoto, dataUsers, status, dispatch}) => {
-    // console.log(dataPhoto, dataUsers, status)
     if (status) {
         dispatch(removeOne(dataPhoto.id))
     } else {
@@ -61,8 +60,6 @@ const MobileView = ({ findPhoto, dataAlbums, dataUsers, isFavorite, dispatch }) 
     const [showPopup, setShowPopup] = useState(false)
 
     const history = useHistory()
-
-    // return <Loading />
 
     return findPhoto !== undefined ? (
         <MobileContainer img={findPhoto.url}>
@@ -127,6 +124,7 @@ const DesktopView = ({ findPhoto, dataAlbums, dataUsers, isFavorite, dispatch })
         }
     }, [dataComments, findPhoto])
 
+    // handle add comment
     const handleComment = () => {
         if (query !== '') {
             dispatch(addOneComment({
@@ -181,7 +179,7 @@ const DesktopView = ({ findPhoto, dataAlbums, dataUsers, isFavorite, dispatch })
                                 </Button>
                             </div>
                             <Subtitle>
-                                Owned by: <Link to={`/user/${dataUsers.name}`}>{dataUsers.name}</Link>
+                                Owned by: <Link to={`/user/${dataUsers.username}`}>{dataUsers.name}</Link>
                             </Subtitle>
                             <Subtitle>
                                 Album: <Link to={`/album/${dataAlbums.id}`}>{dataAlbums.title}</Link>
@@ -279,7 +277,6 @@ function PhotoDetail(props) {
                     isFavorite={isFavorite}
                     dispatch={dispatch}
                 />}
-            {/* <PopupComment /> */}
         </>
     );
 }

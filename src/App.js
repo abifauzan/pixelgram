@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import Home from './pages/Home/Home';
 import { GlobalStyles } from './styles/GlobalStyle';
 import NotFound from './pages/404/404';
@@ -17,6 +17,7 @@ import { useLocation } from 'react-router';
 
 function App() {
 
+  // Fetch All Data
   const dataAlbums = useGetAlbumsQuery()
   const dataUsers = useGetUsersQuery()
   const dataPhotos = useGetPhotosQuery()

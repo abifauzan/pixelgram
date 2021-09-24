@@ -18,9 +18,11 @@ import usePhotoToAlbum from '../../hooks/usePhotoToAlbum';
 
 function Profile() {
 
+    // Get State data
     const profileData = useSelector(selectProfile)
     const favoritesData = useSelector(selectfavorites)
 
+    // Fetch data Albums
     const { data: albumsData } = useAlbumToUser({ userId: profileData.id})
 
     return (

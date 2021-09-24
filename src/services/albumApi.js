@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
+// Base API
 export const albumApi = createApi({
     reducerPath: 'albumApi',
     baseQuery: fetchBaseQuery({
