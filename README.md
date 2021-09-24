@@ -1,8 +1,8 @@
 <h1 align="center">PXL.GRAM</h1>
 
 <p>
-Simple Albums/Photos app to fetch Album and Photo data with their users relationship from [jsonplaceholder.typicode.com](<https://jsonplaceholder.typicode.com/>)
-
+Simple Albums/Photos app to fetch Album and Photo data with their users relationship from jsonplaceholder.typicode.com
+<br>
 </p>
 
 This app is built using create-react-app command with --template redux bellow:
